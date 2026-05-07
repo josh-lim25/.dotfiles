@@ -3,8 +3,10 @@
 # 1. `systemctl --user enable ssh-agent` # and start
 # 2. `stow . -t ~/.config/systemd/user`
 
+# TODO: https://gist.github.com/grenade/6318301#file-ssh-key-add-sh
+
 # https://wiki.archlinux.org/title/SSH_keys#Forwarding_ssh-agent
-# "When forwarding a local ssh-agent to remote (e.g., through command-line argument ssh -A remote 
+# "When forwarding a local ssh-agent to remote (e.g., through command-line argument ssh -A remote
 # or through ForwardAgent yes in the configuration file), it is important for the remote machine
 # not to overwrite the environment variable SSH_AUTH_SOCK" (Forwarding ssh-agent)
 if [[ -z "${SSH_CONNECTION}" ]]; then

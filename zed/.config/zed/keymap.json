@@ -1,0 +1,155 @@
+[
+  {
+      "context": "Editor",
+      "bindings": {
+          "ctrl-space": null,
+      },
+  },
+  {
+    // -- normal mode
+    "context": "EmptyPane || SharedScreen || vim_operator == none && !VimWaiting && vim_mode != insert",
+    "bindings": {
+      "ctrl-space t": "terminal_panel::ToggleFocus",
+      "Y": ["workspace::SendKeystrokes", "y $"],
+      "ctrl-e": ["workspace::SendKeystrokes", "$ %"],
+
+      // TODO:
+      "shift-h": "vim::FirstNonWhitespace",
+      "shift-l": "vim::EndOfLine",
+
+      // centered nav
+      "ctrl-d": ["workspace::SendKeystrokes", "ctrl-d z z"],
+      "ctrl-u": ["workspace::SendKeystrokes", "ctrl-u z z"],
+      // centered search: n/N zz (zv part is a no-op in Zed; no folds)
+      "n":       ["workspace::SendKeystrokes", "n z z"],
+      "shift-n": ["workspace::SendKeystrokes", "shift-n z z"],
+      "*":       ["workspace::SendKeystrokes", "* z z"],
+      "#":       ["workspace::SendKeystrokes", "# z z"],
+
+      // buffers
+      "space j":   "pane::ActivateNextItem",
+      "space k":   "pane::ActivatePreviousItem",
+      "space ;":   ["workspace::SendKeystrokes", "ctrl-6"],
+
+      "g r": "editor::FindAllReferences",
+      "g c c": "editor::ToggleComments",
+      "shift-k": "editor::Hover",
+      "space c a": "editor::ToggleCodeActions",
+      "space r n": "editor::Rename",
+      "space f m": "editor::Format",
+      "space e": "workspace::ToggleLeftDock",
+      "space v": "editor::GoToDefinitionSplit",
+
+      "space f f": "file_finder::Toggle",                  // <leader>ff
+      "space f g": "pane::DeploySearch",                   // <leader>fg (project grep)
+      "space f k": "zed::OpenKeymap",                      // <leader>fk
+      "space f d d": "diagnostics::DeployCurrentFile",       // <leader>fd
+      "space f d a": "diagnostics::Deploy",       // <leader>fd
+      "space f s": "outline::Toggle",                      // <leader>fs (doc symbols)
+      "space f shift-s": "project_symbols::Toggle",        // <leader>fS (workspace symbols)
+      "space f n": "zed::OpenSettings",                    // <leader>fn (Zed config)
+      "space f o": "projects::OpenRecent",                 // <leader>fo — see notes
+
+      "space space": "tab_switcher::Toggle",               // <leader><leader> (open buffers)
+      "space /":     "buffer_search::Deploy",              // <leader>/ (curbuf grep)
+      "space r r":   ["task::Rerun", { "reevaluate_context": true }],
+
+      // grep word/WORD under cursor in project:
+      // selects the text object, then opens project search which picks up the selection.
+      "space f w": ["workspace::SendKeystrokes", "v i w ctrl-shift-f"],
+      "space f shift-w": ["workspace::SendKeystrokes", "v i shift-w ctrl-shift-f"]
+    }
+  },
+  {
+    "context": "Editor && vim_mode == visual && !VimWaiting && !VimObject",
+    "bindings": {
+      "shift-j": "editor::MoveLineDown",
+      "shift-k": "editor::MoveLineUp",
+
+      // stay in indent mode after < / >
+      ">": ["workspace::SendKeystrokes", "> g v"],
+      "<": ["workspace::SendKeystrokes", "< g v"],
+    }
+  },
+
+  {
+    "context": "Workspace || Dock || Editor && VimControl && !VimWaiting && !menu",
+    "bindings": {
+      "ctrl-space z": "workspace::ToggleZoom",
+      "ctrl-space t": "terminal_panel::ToggleFocus",
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown"
+    }
+  },
+  // {
+  //   "context": "Editor",
+  //   "bindings": {
+  //     "cmd-[": "editor::Outdent",
+  //     "cmd-]": "editor::Indent",
+  //     "cmd-alt-up": "editor::AddSelectionAbove",
+  //     "cmd-ctrl-p": "editor::AddSelectionAbove",
+  //     "cmd-alt-down": "editor::AddSelectionBelow",
+  //     // "cmd-ctrl-n": "editor::AddSelectionBelow",
+  //     "cmd-d": ["editor::SelectNext", { "replace_newest": false }],
+  //     "ctrl-cmd-d": ["editor::SelectPrevious", { "replace_newest": false }],
+  //     "cmd-k cmd-d": ["editor::SelectNext", { "replace_newest": true }],
+  //     "cmd-k ctrl-cmd-d": [
+  //       "editor::SelectPrevious",
+  //       { "replace_newest": true }
+  //     ],
+  //     "cmd-/": ["editor::ToggleComments", { "advance_downwards": false }],
+  //     "alt-up": "editor::SelectLargerSyntaxNode",
+  //     "alt-down": "editor::SelectSmallerSyntaxNode",
+  //     "cmd-u": "editor::UndoSelection",
+  //     "cmd-shift-u": "editor::RedoSelection",
+  //     "f8": "editor::GoToDiagnostic",
+  //     "shift-f8": "editor::GoToPreviousDiagnostic",
+  //     "f2": "editor::Rename",
+  //     "f12": "editor::GoToDefinition",
+  //     "alt-f12": "editor::GoToDefinitionSplit",
+  //     "cmd-f12": "editor::GoToTypeDefinition",
+  //     "alt-cmd-f12": "editor::GoToTypeDefinitionSplit",
+  //     "alt-shift-f12": "editor::FindAllReferences",
+  //     "ctrl-m": "editor::MoveToEnclosingBracket",
+  //     "alt-cmd-[": "editor::Fold",
+  //     "alt-cmd-]": "editor::UnfoldLines",
+  //     "cmd-.": "editor::ToggleCodeActions"
+  //   }
+  // },
+
+  {
+    "context": "vim_mode == insert",
+    "bindings": {
+      "ctrl-v": "editor::Paste"
+    }
+  }
+
+
+  // TODO:
+  // {
+  //   "context": "VimControl && !VimWaiting && !menu",
+  //   "bindings": {
+  //     // --- Porting mini.surround mappings (Normal Mode) ---
+  //     "s u": ["vim::PushAddSurrounds", {}],
+  //     "s d": ["vim::PushDeleteSurrounds", {}],
+  //     "s r": ["vim::PushChangeSurrounds", {}],
+  //
+  //     // Porting 's' to black hole register behavior
+  //     "s": ["workspace::SendKeystrokes", "\" _ s"]
+  //   }
+  // },
+  // {
+  //   "context": "vim_mode == visual",
+  //   "bindings": {
+  //     // Porting 'su' (Visual Mode)
+  //     "s u": ["vim::PushAddSurrounds", {}],
+  //
+  //     // Porting mini.ai treesitter selections (vaf, vif)
+  //     "a f": "editor::SelectLargerSyntaxNode",
+  //     "i f": "editor::SelectLargerSyntaxNode"
+  //   }
+  // }
+
+]

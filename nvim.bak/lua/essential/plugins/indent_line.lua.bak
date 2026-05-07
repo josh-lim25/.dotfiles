@@ -1,7 +1,0 @@
-return {
-  { -- adds indentation guides (straight lines along levels of indentation)
-    'lukas-reineke/indent-blankline.nvim',
-    main = 'ibl',
-    opts = {},
-  },
-}

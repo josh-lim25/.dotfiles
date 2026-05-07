@@ -83,4 +83,8 @@
   Tag = []
   command = "patch -R -p1 < ../changes.patch"
 
-
+[[Snippets]]
+  Description = "JSON: check syntax"
+  Output = ""
+  Tag = []
+  command = "python -m json.tool keymap.json"

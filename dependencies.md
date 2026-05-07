@@ -53,7 +53,18 @@
 - `obsidian`
 - `openssh`
 - `reflector`
-- `qemu` (see the octetz vid, `bridge-utils` is a biggie)
+- `qemu-base`
+- `swtpm`
+- `openbsd-netcat`
+- `libvirt`
+- `virt-install`
+- `edk2-ovmf`
+- `dnsmasq`
+- `iptables-nft`
+- `libosinfo`
+- `dmidecode`
+- `guestfs-tools`
+- `cdrtools`
 - `pacman-contrib` (for cache cleaning, look it up)
 - `xclip`
 - `xbindkeys`
@@ -77,7 +88,6 @@
 - `gdb`
 - `ninja`
 - `meson`
-- `openbsd-netcat`
 - `bc`
 - `libscfg`
 - `libvarlink`
@@ -98,6 +108,7 @@
 - `java-runtime-common`
 - `gradle`
 - `sfml`
+- `perf`
 
 ## Sway
 

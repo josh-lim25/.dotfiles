@@ -20,6 +20,8 @@ keymap("x", ",", "t,", opts) -- TODO: get f, F behavior w/; and , see treesitter
 keymap("x", ".", "t.", opts)
 keymap({ "n", "v", "x", "o" }, "H", "^", opts)
 keymap({ "n", "v", "x", "o" }, "L", "$", opts)
+keymap({ "n", "v", "x", "o" }, "gH", "g^", opts)
+keymap({ "n", "v", "x", "o" }, "gL", "g$", opts)
 keymap({ "n", "v", "x", "o" }, "<C-e>", "$%", opts) -- WHY DIDNT I DO THIS EARLIER
 keymap("n", "<leader>e", "q:", { noremap = true, silent = true, desc = "[E]dit commands in cmd line window" })
 
@@ -107,9 +109,9 @@ keymap("x", "<leader>wc", ":'<,'>w !wc <CR>", { desc = "[W]ord [C]ount selection
 -- ! tr -s " " | column -t -s '|' -o '|'
 keymap(
   "x",
-  "<leader>fmt",
+  "<leader>mf",
   ":'<,'>! tr -s ' ' | column -t -s '|' -o '|'<CR>",
-  { desc = "[F]ormat markdown table", noremap = true, silent = true }
+  { desc = "[M]arkdown [F]ormat  table", noremap = true, silent = true }
 )
 
 -- [[ APPLY CHANGE ACROSS LINE OR VISUAL SELECTION (i.e., ;.;.;.) ]]

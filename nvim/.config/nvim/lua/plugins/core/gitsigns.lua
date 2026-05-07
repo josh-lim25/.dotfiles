@@ -78,10 +78,10 @@ return {
 
         -- Diffs
         -- map('n', '<leader>gd', gitsigns.preview_hunk, { desc = '[g]it preview hunk [d]iff' })
-        map("n", "<leader>gd", gitsigns.preview_hunk_inline, { desc = "[g]it preview hunk [d]iff inline" })
-        map("n", "<leader>gD", gitsigns.diffthis, { desc = "[g]it [d]iff against index in a split view" })
+        map("n", "<leader>gdd", gitsigns.preview_hunk_inline, { desc = "[g]it preview hunk [d]iff inline" })
+        map("n", "<leader>gdo", gitsigns.diffthis, { desc = "[g]it [d]iff against index in an [o]pened split view" })
         map("n", "<leader>td", gitsigns.toggle_deleted, { desc = "[T]oggle git show [D]eleted" })
-        map('n', '<leader>tw', gitsigns.toggle_word_diff)
+        map('n', '<leader>gdw', gitsigns.toggle_word_diff)
 
         -- Blame
         map("n", "<leader>gb", gitsigns.blame_line, { desc = "[g]it [b]lame line" })

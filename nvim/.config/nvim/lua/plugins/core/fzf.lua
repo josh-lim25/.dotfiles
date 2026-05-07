@@ -53,6 +53,9 @@ return {
     keymap("n", "<leader>fn", function()
       fzf.files({ cwd = vim.fn.stdpath("config") })
     end, { desc = "Find in Neovim config" })
+    keymap("n", "<leader>fp", function()
+      fzf.files({ cwd = "~/spaghetti/projects/" })
+    end, { desc = "Find in projects" })
 
     -- [[ LSP KEYMAPS ]]
     keymap("n", "<leader>cap", fzf.lsp_code_actions, { desc = "Code actions" })
@@ -61,8 +64,53 @@ return {
     keymap("n", "<leader>fs", fzf.lsp_document_symbols, { desc = "Find symbols in document" })
     keymap("n", "<leader>fS", fzf.lsp_workspace_symbols, { desc = "Find symbols in workspace" })
 
-    vim.api.nvim_create_user_command("FzfDots", function()
-      fzf.files({ cwd = "$HOME/.dotfiles" })
-    end, {})
+    -- [[ DOCS ]]
+    local function browse_docs()
+      local ft = vim.bo.filetype
+      local cmd, preview_cmd
+
+      if ft == "go" then
+        cmd = "stdsym"
+        preview_cmd = "go doc {1}"
+      elseif ft == "lua" then
+        cmd = "printf 'table\\nstring\\nmath\\nos'"
+        preview_cmd = "help {1}" -- Neovim internal help
+      else
+        print("No doc config for " .. ft)
+        return
+      end
+
+      fzf.fzf_exec(cmd, {
+        prompt = "Docs (" .. ft .. ")> ",
+        previewer = "builtin", -- Use nvim's builtin preview for speed
+        fn_preprocess = function(contents)
+          -- TODO: filter list
+          return contents
+        end,
+        fzf_opts = {
+          ["--preview"] = preview_cmd,
+          ["--preview-window"] = "right,60%,border-left",
+        },
+        actions = {
+          ["default"] = function(selected)
+            -- :h
+            if ft == "lua" then
+              vim.cmd("leftabove vsplit | help " .. selected[1])
+              return
+            end
+            local cmd = preview_cmd:gsub("{1}", selected[1])
+            local output = vim.fn.systemlist(cmd)
+            vim.cmd("leftabove vnew")
+            vim.bo.buftype = "nofile"
+            vim.bo.bufhidden = "hide"
+            vim.bo.swapfile = false
+            vim.bo.filetype = ft
+            vim.api.nvim_buf_set_lines(0, 0, -1, false, output)
+          end,
+        },
+      })
+    end
+
+    keymap("n", "<leader>god", browse_docs, { desc = "Browse Stdlib Docs" })
   end,
 }

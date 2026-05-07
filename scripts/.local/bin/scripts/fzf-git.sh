@@ -90,11 +90,11 @@ if [[ $1 = --list ]]; then
         hashes --all
         ;;
       refs)
-        echo 'CTRL-O (open in browser) ╱ ALT-E (examine in editor) ╱ ALT-A (show all refs)'
+        echo 'CTRL-O (open in browser) ╱ CTRL-E (examine in editor) ╱ ALT-A (show all refs)'
         refs --exclude='refs/remotes'
         ;;
       all-refs)
-        echo 'CTRL-O (open in browser) ╱ ALT-E (examine in editor)'
+        echo 'CTRL-O (open in browser) ╱ CTRL-E (examine in editor)'
         refs
         ;;
       *) exit 1 ;;
@@ -159,9 +159,9 @@ if [[ $- =~ i ]] || [[ $1 = --run ]]; then # ----------------------------------
 if [[ $__fzf_git_fzf ]]; then
   eval "$__fzf_git_fzf"
 else
-  # Redefine this function to change the options
+  # NOTE: Redefine this function to change the options
   _fzf_git_fzf() {
-    fzf --height 50% --tmux 90%,70% \
+    fzf --height 50%  \
       --layout reverse --multi --min-height 20+ --border \
       --no-separator --header-border horizontal \
       --border-label-pos 2 \
@@ -191,9 +191,9 @@ _fzf_git_files() {
    git ls-files "$root" | grep -vxFf <(git status -s | grep '^[^?]' | cut -c4-; echo :) | sed 's/^/   /') |
   _fzf_git_fzf -m --ansi --nth 2..,.. \
     --border-label '📁 Files ' \
-    --header 'CTRL-O (open in browser) ╱ ALT-E (open in editor)' \
+    --header 'CTRL-O (open in browser) ╱ CTRL-E (open in editor)' \
     --bind "ctrl-o:execute-silent:bash \"$__fzf_git\" --list file {-1}" \
-    --bind "alt-e:execute:${EDITOR:-vim} {-1} > /dev/tty" \
+    --bind "ctrl-e:execute:${EDITOR:-vim} {-1} > /dev/tty" \
     --query "$query" \
     --preview "git diff --no-ext-diff --color=$(__fzf_git_color .) -- {-1} | $(__fzf_git_pager); $(__fzf_git_cat) {-1}" "$@" |
   cut -c4- | sed 's/.* -> //'
@@ -288,7 +288,7 @@ _fzf_git_each_ref() {
     --no-hscroll \
     --bind 'ctrl-/:change-preview-window(down,70%|hidden|)' \
     --bind "ctrl-o:execute-silent:bash \"$__fzf_git\" --list {1} {2}" \
-    --bind "alt-e:execute:${EDITOR:-vim} <(git show {2}) > /dev/tty" \
+    --bind "ctrl-e:execute:${EDITOR:-vim} <(git show {2}) > /dev/tty" \
     --bind "alt-a:change-border-label(🍀 Every ref)+reload:bash \"$__fzf_git\" --list all-refs" \
     --preview "git log --oneline --graph --date=short --color=$(__fzf_git_color .) --pretty='format:%C(auto)%cd %h%d %s' {2} --" "$@" |
   awk '{print $2}'

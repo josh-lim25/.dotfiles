@@ -1,0 +1,58 @@
+{
+  // https://gist.github.com/adibhanna/66673edfec11d702d56f021ecaebd6be
+  "theme": "Gruvbox Dark Hard",
+  "base_keymap": "VSCode",
+  "buffer_font_family": "BerkeleyMono Nerd Font",
+  "buffer_font_size": 15,
+  "vim_mode": true,
+  "relative_line_numbers": true,
+  "cursor_blink": false,
+  "scrollbar": {
+    "show": "never"
+  },
+  "buffer_line_height": {
+    "custom": 1.7
+  },
+  "terminal": {
+    "font_family": "BerkeleyMono Nerd Font",
+    "font_size": 15,
+    "line_height": {
+      "custom": 1.7
+    }
+  },
+  "inlay_hints": {
+    "enabled": false
+  },
+  "lsp": {
+    "gopls": {
+      "initialization_options": {
+        "gofumpt": true,
+        "usePlaceholders": true,
+        "staticcheck": true,
+        "codelenses": {
+          "gc_details": true,
+          "generate": true,
+          "regenerate_cgo": true,
+          "tidy": true,
+          "upgrade_dependency": true,
+          "vendor": true
+        },
+        "analysis": {
+          "completeUnimported": true,
+          "staticcheck": true,
+          "unusedParams": true,
+          "unusedWrite": true
+        },
+        "hints": {
+          "assignVariableTypes": true,
+          "compositeLiteralFields": true,
+          "compositeLiteralTypes": true,
+          "constantValues": true,
+          "functionTypeParameters": true,
+          "parameterNames": true,
+          "rangeVariableTypes": true
+        }
+      }
+    }
+  }
+}

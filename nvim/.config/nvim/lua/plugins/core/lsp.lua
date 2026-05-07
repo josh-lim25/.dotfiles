@@ -116,7 +116,7 @@ return {
 
                     -- TODO: change dynamically based on ft (looks good in java, bad w others)
                     -- [[ Disable LSP semantic token highlighting ]]
-                    client.server_capabilities.semanticTokensProvider = nil
+                    -- client.server_capabilities.semanticTokensProvider = nil
                     -- NOTE: Prevent LSP from overwriting treesitter color settings
                     -- https://github.com/NvChad/NvChad/issues/1907
                     -- vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
@@ -219,6 +219,7 @@ return {
                 -- NOTE: just putting formatters here
                 "jdtls",
                 "stylua", -- Lua
+                "tree-sitter-cli",
                 -- 'golangci-lint',  -- BAD: use pacman
                 -- 'prettierd', -- md, js code
                 -- 'markdownlint',

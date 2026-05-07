@@ -1,0 +1,68 @@
+#!/bin/bash
+
+# --- TrueColor Codes (Hex Converted) ---
+# Yellow: #f0c674 -> R=240, G=198, B=116
+# Green:  #b5bd68 -> R=181, G=189, B=104
+# Blue:   #81a2be -> R=129, G=162, B=190
+
+YELLOW='\033[38;2;240;198;116m'
+GREEN='\033[38;2;181;189;104m'
+BLUE='\033[38;2;129;162;190m'
+WHITE='\033[38;5;15m'
+RESET='\033[0m'
+
+# Hide cursor
+tput civis
+# Restore cursor on exit
+trap "tput cnorm; echo; exit" INT TERM EXIT
+
+running=true
+start_time=$(date +%s)
+saved_elapsed=0
+
+clear
+echo -e "${BLUE}STOPWATCH STARTED${RESET}"
+echo -e "${YELLOW}Space${RESET}: Pause/Resume  |  ${YELLOW}Q${RESET}: Quit"
+echo -e "${BLUE}--------------------------------${RESET}"
+
+while true; do
+    # 1. Calculate Time
+    current_time=$(date +%s)
+
+    if $running; then
+        total_seconds=$((current_time - start_time))
+    else
+        total_seconds=$saved_elapsed
+    fi
+
+    # 2. Format HH:MM:SS
+    h=$((total_seconds / 3600))
+    m=$(( (total_seconds % 3600) / 60 ))
+    s=$((total_seconds % 60))
+
+    # 3. Display
+    if $running; then
+        printf "\r${YELLOW}Time Elapsed: ${GREEN}[ ${WHITE}%02d:%02d:%02d ${GREEN}]${RESET}   " $h $m $s
+    else
+        printf "\r${BLUE}PAUSED      : ${GREEN}[ ${WHITE}%02d:%02d:%02d ${GREEN}]${RESET}   " $h $m $s
+    fi
+
+    # 4. Input - IFS= ensures Space is read literally
+    IFS= read -rs -t 0.1 -n 1 key
+
+    if [[ $key == " " ]]; then
+        if $running; then
+            # Pause
+            running=false
+            saved_elapsed=$total_seconds
+        else
+            # Resume: Reset start_time relative to how much time we already have
+            start_time=$((current_time - saved_elapsed))
+            running=true
+        fi
+    elif [[ $key == "q" || $key == "Q" ]]; then
+        # Print final time
+        printf "\n\n${BLUE}Final Time: ${GREEN}[ ${WHITE}%02d:%02d:%02d ${GREEN}]${RESET}\n" $h $m $s
+        break
+    fi
+done

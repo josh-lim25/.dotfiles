@@ -22,6 +22,8 @@ o.conceallevel = 0                       -- so that `` is visible in markdown fi
 o.encoding="UTF-8"                       -- the encoding written to a file
 o.autoindent = true                      -- copy indent from current line when starting new one
 o.formatoptions:remove { 'c', 'r', 'o' } -- don't insert the current comment leader automatically for auto-wrapping comments using 'textwidth', hitting <Enter> in insert mode, or hitting 'o' or 'O' in normal mode.
+o.foldenable = false    -- Disable folds
+o.foldmethod = "manual" -- Set foldmethod to manual
 -- }}
 
 -- [[ LINE NUMBERS ]] {{
@@ -124,7 +126,12 @@ o.ttimeoutlen = -1  -- fallback to timeoutlen
 -- If you set ttimeoutlen to -1, you only need to adjust timeoutlen to control all key-mapping related timeouts.
 -- lower values mean you need to be faster
 o.timeoutlen = 250 -- time to wait for a mapped sequence to complete (in milliseconds)
--- }}
 
+-- TODO: https://til.hashrocket.com/posts/uanfzuizgu-change-up-to-next-underscore-in-vim highlight issues if there are
+o.iskeyword:remove('_') -- applies to w, e, b, ge text objects
+o.iskeyword:remove('-') -- applies to w, e, b, ge text objects
+-- TODO: bad for security?
+-- o.exrc = false
+-- }}
 
 -- vim: ts=2 sts=2 sw=2 et

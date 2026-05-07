@@ -1,22 +1,47 @@
 # TODOs
+- Learn about the Tako project - read all PRs (really)
+    - Plan here is to go to batman commit and try to build it on my own machine bit by bit. maybe a container.
+    - See `../../container-git.sh`
+[agent](https://ampcode.com/notes/how-to-build-an-agent)
+[jj](https://www.reddit.com/r/NixOS/comments/1icwzxi/jujutsu_is_the_new_version_control_system_in_town/)
+[tre](https://www.reddit.com/r/longtermTRE/comments/1l5x8pt/tre_theory_and_experiment_trauma_release_in_the/)
+[i want to use gitlab and argocd to make a ci cd pipeline, is this doable with a ubuntu docker container?](https://www.reddit.com/r/kubernetes/comments/1jaetqf/gitlab_ci_argocd/)
+[deepwiki for summarizing repos](https://github.com/AsyncFuncAI/deepwiki-open)
+- slop mop idea: using something like golden file testing could i make an app to de-ai code, so it looks normal
+- is there a neovim plugin to automatically correct lsp diagnostics with llm
+- maybe a prompt history. easily copy most recently used prompts into your clipboard
+
+- [db course](https://15445.courses.cs.cmu.edu/spring2026/)
+
+
+## Projects
+1. Music recommendations/distributed music analytics platform
+2. See `~/spaghetti/projects/ideas/brainstorming-wip/chatgpt-ideas.pdf`
+2. See `~/spaghetti/projects/ideas/brainstorming-wip/claude-ideas.md`
+
+https://www.reddit.com/r/FirefoxCSS/wiki/index/tutorials/
+
 ---
 ## The Dailies
-- Leetcode problem
-    - already been doing two minimum. make it *3*, try to get to **5**.
+- 2 hours spent on system design practice
+    - Must watch [video](https://www.youtube.com/watch?v=bUHFg8CZFws)
+    - Use Hello Interview, [this post](https://www.reddit.com/r/cscareerquestions/comments/ufhjjk/what_are_the_best_resources_to_study_system_design/)
+- 2 Leetcode problems minimum
     - Come up with a "script" that you practice with every single leetcode problem
+- Projects, resume
 - Start practicing your narrative, pitch, and whatever for behaviorals
     - See `~/Documents/ObsidianNotes/003Resources/Runbooks/Interview/Behavioral/Questions.md`
 
 ## Technical
 - [ ] What is database schema design with examples of interview questions and answers?
+
 ### JAVA
 - [ ] proficiency and mastery over streams
 - [ ] spring boot
-
+- [ ] create anki decks for spring boot annotations and system design
+    - [cheat sheet, find better](https://rameshfadatare.medium.com/spring-and-spring-boot-annotations-cheat-sheet-b99bad0f6963)
 
 ## PRONTO
-- [ ] SCHWAB BY DEC 27 FOR $50
-- [ ] polish resume
 - [ ] [spring essentials tutorial](https://spring.academy/courses/spring-framework-essentials)
 - [ ] [great guy marco smart talks tradeoffs](https://www.marcobehler.com/courses/spring-professional)
     - [more](https://www.marcobehler.com/)

@@ -1,3 +1,7 @@
+# ZED
+- `gl`: multicursors
+
+
 # FZF
 - `f`: general "find file and edit"
 - `ff`: fuzzy find files with rg, then edit
@@ -16,7 +20,7 @@
 
 # TMUX
 - `<prefix>Y` : copy `$(pwd)`
-- `<prefix>&` : kill window (with all the panes) 
+- `<prefix>&` : kill window (with all the panes)
 - `<S-Left>`: move tmux window to left
 - `<S-Right>`: move tmux window to right
 - `<prefix>space`: freeze frame (modified)
@@ -48,7 +52,7 @@ maybe prefix V and H for copying cwd first
 - `@f`: formatter, "stuff" -> "- `stuff`"
 - *Note*: two below use `gcc`, so comment is required for macro and based on `ft`
 - `@h`: config block header, "-- header" -> "-- [[ HEADER ]] {{"
-- `@s`: config block subheadings," -- subheader" -> "-- [[ SUBHEADER ]] " 
+- `@s`: config block subheadings," -- subheader" -> "-- [[ SUBHEADER ]] "
 - `@c`: checklist
     - *Note*: can't actually use insert mode `<C-l>` because of snippet expansion
 - `@t`: todo, on a newline it'll give you `- [ ] []()`

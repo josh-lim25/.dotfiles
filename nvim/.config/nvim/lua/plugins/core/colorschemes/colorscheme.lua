@@ -1,159 +1,65 @@
 return {
-  {
-    -- sexy colors (Tomorrow Night fork)
-    'warmgarlicbread/kanagawa.nvim',
-    priority = 1000,
-    init = function()
-      require('kanagawa').setup {
-        compile = false,
-        undercurl = true,
-        commentStyle = { italic = false },
-        functionStyle = {},
-        typeStyle = {},
-        keywordStyle = { italic = false },
-        statementStyle = { bold = true },
-        operatorStyle = { bold = true },
-        transparent = false,
-        dimInactive = false,
-        terminalColors = true,
-        colors = {
-          -- Palette overrides are now in the fork's colors.lua
-          -- Only theme-specific overrides remain here
-          theme = {
-            wave = {
-              ui = {
-                fg = '#c5c8c6',
-                fg_dim = '#707880',
-                fg_reverse = '#2D4F67',
-                bg = '#1d1f21',
-                bg_dim = '#1d1f21',
-                bg_m3 = '#1d1f21',
-                bg_m2 = '#1d1f21',
-                bg_m1 = '#1d1f21',
-                bg_p1 = '#282a2e',
-                bg_p2 = '#373b41',
-                bg_gutter = '#282a2e',
-                special = '#81a2be',
-                nontext = '#373b41',
-                whitespace = '#373b41',
-                bg_search = '#2D4F67',
-                bg_visual = '#43436c',
-                pmenu = {
-                  fg = '#c5c8c6',
-                  fg_sel = 'none',
-                  bg = '#2D4F67',
-                  bg_sel = '#223249',
-                  bg_sbar = '#2D4F67',
-                  bg_thumb = '#223249',
-                },
-                float = {
-                  fg = '#707880',
-                  bg = '#1d1f21',
-                  fg_border = '#373b41',
-                  bg_border = '#1d1f21',
-                },
-              },
-              syn = {
-                string = '#b5bd68',
-                variable = 'none',
-                number = '#c4746e',
-                constant = '#de935f',
-                identifier = '#f0c674',
-                parameter = '#b5bd68',
-                fun = '#81a2be',
-                statement = '#b294bb',
-                keyword = '#b294bb',
-                operator = '#f0c674',
-                preproc = '#cc6666',
-                type = '#9fb5c9',
-                regex = '#f0c674',
-                deprecated = '#707880',
-                comment = '#707880',
-                punct = '#c5c8c6',
-                special1 = '#9fb5c9',
-                special2 = '#cc6666',
-                special3 = '#cc6666',
-              },
-              diag = {
-                ok = '#b5bd68',
-                error = '#cc6666',
-                warning = '#f0c674',
-                info = '#81a2be',
-                hint = '#7AA89F',
-              },
-            },
-            lotus = {},
-            dragon = {},
-            all = {},
+  "thesimonho/kanagawa-paper.nvim",
+  lazy = false,
+  priority = 1000,
+  opts = {
+    colors = {
+      palette = {},
+      theme = {
+        ink = {
+          ui = {
+            bg_search = "#43436c",
+            -- bg_search = "#2d4f67",
           },
         },
-        overrides = function(colors)
-          local theme = colors.theme
-          local c = require 'kanagawa.lib.color'
+      },
+    },
+    overrides = function(colors)
+      local bg = colors.theme.ui.bg_search
+      local p = colors.palette
 
-          local tintDiagnosticBg = function(color)
-            return {
-              fg = color,
-              bg = c(color):blend(theme.ui.bg, 0.95):to_hex(),
-            }
-          end
+      return {
+        -- search
+        Search = { bg = bg, fg =    p.oldWhite },
+        CurSearch = { bg = bg, fg = p.oldWhite, bold = true },
+        IncSearch = { bg = bg, fg = p.oldWhite, bold = true },
 
-          return {
-            Pmenu = { fg = theme.ui.fg, bg = theme.ui.bg_p1, blend = vim.o.pumblend },
-            PmenuSel = { fg = 'NONE', bg = theme.ui.bg_p2 },
-            PmenuSbar = { bg = theme.ui.bg_m1 },
-            PmenuThumb = { bg = theme.ui.bg_p2 },
+        -- markdown inline (treesitter)
+        ["@markup.link.url.markdown_inline"] = { link = "Special" },
+        ["@markup.link.label.markdown_inline"] = { link = "WarningMsg" },
+        ["@markup.italic.markdown_inline"] = { fg = p.oniViolet2, italic = true },
+        ["@markup.strong.markdown_inline"] = { fg = p.dragonYellow, bold = true },
+        ["@markup.raw.markdown_inline"] = { fg = p.dragonGreen2 },
+        ["@markup.list.markdown"] = { link = "Function" },
+        ["@markup.quote.markdown"] = { fg = p.dragonOrange },
+        ["@markup.list.checked.markdown"] = { link = "WarningMsg" },
 
-            DiagnosticVirtualTextHint = tintDiagnosticBg(theme.diag.hint),
-            DiagnosticVirtualTextInfo = tintDiagnosticBg(theme.diag.info),
-            DiagnosticVirtualTextWarn = tintDiagnosticBg(theme.diag.warning),
-            DiagnosticVirtualTextError = tintDiagnosticBg(theme.diag.error),
+        -- NO HEADER BG
+        RenderMarkdownH1 = { fg = p.dragonYellow, bold = true },
+        RenderMarkdownH2 = { fg = p.dragonGreen, bold = true },
+        RenderMarkdownH3 = { fg = p.dragonBlue2, bold = true },
+        RenderMarkdownH4 = { fg = p.dragonAqua, bold = true },
+        RenderMarkdownH5 = { fg = p.dragonViolet, bold = true },
+        RenderMarkdownH6 = { fg = p.dragonGray, bold = true },
+        RenderMarkdownH1Bg = { fg = p.dragonYellow, bg = "NONE", bold = true },
+        RenderMarkdownH2Bg = { fg = p.dragonGreen, bg = "NONE", bold = true },
+        RenderMarkdownH3Bg = { fg = p.dragonBlue2, bg = "NONE", bold = true },
+        RenderMarkdownH4Bg = { fg = p.dragonAqua, bg = "NONE", bold = true },
+        RenderMarkdownH5Bg = { fg = p.dragonViolet, bg = "NONE", bold = true },
+        RenderMarkdownH6Bg = { fg = p.dragonGray, bg = "NONE", bold = true },
 
-            TelescopeTitle = { fg = theme.ui.special, bold = true },
-            TelescopeNormal = { bg = theme.ui.bg_dim },
-            TelescopeBorder = { fg = theme.ui.bg_dim, bg = theme.ui.bg_dim },
-            TelescopePromptNormal = { bg = theme.ui.bg_p1 },
-            TelescopePromptBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
-            TelescopePreviewNormal = { bg = theme.ui.bg_dim },
-            TelescopePreviewBorder = { fg = theme.ui.bg_dim, bg = theme.ui.bg_dim },
-            TelescopeResultsNormal = { bg = theme.ui.bg_dim },
-            TelescopeResultsBorder = { fg = theme.ui.bg_dim, bg = theme.ui.bg_dim },
-
-            NormalFloat = { bg = 'none' },
-            FloatBorder = { bg = 'none' },
-            FloatTitle = { bg = 'none' },
-            NormalDark = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m3 },
-            LazyNormal = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
-            MasonNormal = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
-
-            -- for weird stuff like s[m[d]]
-            ["@type.go"] = { fg = theme.ui.fg }, -- force Go "types" like matrix → white
-
-            -- Markdown-specific
-            ['@markup.link.url.markdown_inline'] = { link = 'Special' }, -- (url)
-            ['@markup.link.label.markdown_inline'] = { link = 'WarningMsg' }, -- [label]
-            -- TODO: make the text itself bold as well
-            ['@markup.italic.markdown_inline'] = { fg = '#b294bb', italic = true }, -- *italic*
-            ['@markup.strong.markdown_inline'] = { fg = '#f0c674', bold = true }, -- *bold
-            ['@markup.raw.markdown_inline'] = { fg = '#b5bd68' }, -- `code`
-            ['@markup.list.markdown'] = { link = 'Function' }, -- + list
-            ['@markup.quote.markdown'] = { fg = '#de935f' }, -- > blockcode
-            ['@markup.list.checked.markdown'] = { link = 'WarningMsg' }, -- - [X] checked list item
-
-            ['@markup.heading.1.markdown'] = { fg = '#f0c674', bold = true },
-            ['@markup.heading.2.markdown'] = { fg = '#b5bd68', bold = true },
-            ['@markup.heading.3.markdown'] = { fg = '#81a2be', bold = true },
-            -- ['@markup.heading.4.markdown'] = { fg = '#9fb5c9', bold = true },
-          }
-        end,
-        theme = 'wave',
-        background = {
-          dark = 'wave',
-          light = 'lotus',
-        },
+        -- ["@markup.heading.1.markdown"] = { fg = p.dragonYellow, bold = true },
+        -- ["@markup.heading.2.markdown"] = { fg = p.dragonGreen, bold = true },
+        -- ["@markup.heading.3.markdown"] = { fg = p.dragonBlue2, bold = true },
+        -- ["@markup.heading.4.markdown"] = { fg = p.dragonAqua, bold = true },
+        -- ["@markup.heading.5.markdown"] = { fg = p.dragonViolet, bold = true },
+        -- ["@markup.heading.6.markdown"] = { fg = p.dragonGray, bold = true },
+        --
       }
-
-      vim.cmd 'colorscheme kanagawa'
     end,
   },
+  config = function(_, opts)
+    require("kanagawa-paper").setup(opts)
+    vim.cmd.colorscheme("kanagawa-paper-ink")
+  end,
 }

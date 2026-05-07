@@ -1,164 +1,157 @@
 return {
-    'nvim-treesitter/nvim-treesitter',
-    build = { ":TSUpdate" },
-    dependencies = {
-        'nvim-treesitter/nvim-treesitter-textobjects',
-    },
-    config = function()
-        require('nvim-treesitter.install').prefer_git = true,
-        -- https://github.com/nvim-treesitter/nvim-treesitter?tab=readme-ov-file#modules
-        require'nvim-treesitter.configs'.setup {
-            ensure_installed = { "go", "bash", "cpp", "diff", "c", "java", "lua", "vim", "vimdoc", "markdown", "markdown_inline", "gitcommit", "git_rebase", "gitattributes", "gitignore", "rust", "python", "html", "css", "yaml", "json", "toml", "dockerfile", "make", "sql", "http" },
-            sync_install = false,
-            auto_install = false,
-            -- ignore_install = { "javascript" },
-            incremental_selection = {
-                enable = true,
-                keymaps = {
-                    init_selection = "<leader>ss", -- set to `false` to disable one of the mappings
-                    node_incremental = "<leader>si",
-                    node_decremental = "<leader>sd",
-                    -- scope_incremental = "grc",
-                },
-            },
-            highlight = {
-                enable = true,  -- set to false disables entire extension (so don't)
-                -- https://github.com/kiyoon/dotfiles/blob/master/nvim/lua/kiyoon/treesitter.lua#L93
-                -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
-                -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
-                -- the name of the parser)
-                -- disable = { "python", "lua" }, -- list of languages that will be disabled
-                -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
-                disable = function(lang, buf)
-                    local disable_langs = { "python", "javascript", "typescript" }
-                    -- For python etc. disable treesitter highlighting in favour of LSP semantic highlighting.
-                    -- However, we still want treesitter syntax highlighting for floating windows and injections.
-                    if vim.list_contains(disable_langs, lang) then
+    {
+        'nvim-treesitter/nvim-treesitter',
+        branch = 'main',
+        lazy = false,           -- main does not support lazy-loading
+        build = ':TSUpdate',
+        config = function()
+            require('nvim-treesitter').setup({
+                install_dir = vim.fn.stdpath('data') .. '/site',
+            })
+            local parsers = {
+                'go', 'bash', 'cpp', 'diff', 'c', 'java', 'lua', 'vim',
+                'vimdoc', 'markdown', 'markdown_inline', 'gitcommit',
+                'git_rebase', 'gitattributes', 'gitignore', 'rust', 'python',
+                'html', 'css', 'yaml', 'json', 'toml', 'dockerfile', 'make',
+                'sql', 'http',
+            }
+            require('nvim-treesitter').install(parsers)
 
-                        -- if the buffer is a floating window, enable treesitter
-                        if vim.bo[buf].buftype == "nofile" then
-                            return false
-                        end
+            local lsp_disable_highlight_langs = {
+                python = true, javascript = true, typescript = true,
+            }
+            local extra_regex_syntax = {
+                gitcommit = true, ruby = true,
+            }
+            local no_ts_indent = {
+                yaml = true,
+            }
+            local MAX_FILESIZE = 100 * 1024 -- 100 KB
 
-                        -- -- if the file extension is .ju.py, enable treesitter
-                        -- if vim.api.nvim_buf_get_name(buf):match("%.ju%.py$") then
-                        --     return false
-                        -- end
+            vim.api.nvim_create_autocmd('FileType', {
+                group = vim.api.nvim_create_augroup('user.treesitter', { clear = true }),
+                callback = function(ev)
+                    local buf = ev.buf
+                    local lang = vim.treesitter.language.get_lang(ev.match) or ev.match
 
-                        return true
+                    -- disable for huge files
+                    local fname = vim.api.nvim_buf_get_name(buf)
+                    local ok, stats = pcall(vim.uv.fs_stat, fname)
+                    if ok and stats and stats.size > MAX_FILESIZE then
+                        return
                     end
-                    local max_filesize = 100 * 1024 -- 100 KB
-                    local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-                    if ok and stats and stats.size > max_filesize then
-                        return true
+
+                    -- highlight
+                    local skip_hl = lsp_disable_highlight_langs[lang]
+                        and vim.bo[buf].buftype ~= 'nofile'
+                    if not skip_hl then
+                        pcall(vim.treesitter.start, buf, lang)
+                    end
+
+                    -- some filetypes want vim-regex syntax in addition to / instead of TS
+                    if extra_regex_syntax[ev.match] then
+                        vim.bo[buf].syntax = 'ON'
+                    end
+
+                    -- Folds
+                    -- vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+                    -- vim.wo[0][0].foldmethod = 'expr'
+
+                    -- Indent (experimental upstream)
+                    if not no_ts_indent[ev.match] then
+                        vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
                     end
                 end,
-                -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-                -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-                -- Using this option may slow down your editor, and you may see some duplicate highlights.
-                additional_vim_regex_highlighting = { "gitcommit", "ruby" },
-            },
-            indent = {
-                -- enable = false,
-                enable = true,
-                disable = { 'yaml' }
-            },
-            matchup = {
-                enable = true,
-            },
+            })
+        end,
+    },
 
-            -- TEXTOBJS
-            -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects?tab=readme-ov-file#text-objects-select
-            -- keys are treated as targets for operator-pending or visual mode commands, meaning doing stuff like dap and vap (native textobjects would be aw, iw, ap, etc). Treesitter just adds semantic-aware ones.
-            textobjects = {
+    {
+        'nvim-treesitter/nvim-treesitter-textobjects',
+        branch = 'main',
+        config = function()
+            require('nvim-treesitter-textobjects').setup({
                 select = {
-                    enable = true,
                     lookahead = true,
-                    keymaps = {
-                        -- https://github.com/kiyoon/dotfiles/blob/4a8254047225b1ebf956fbe96bc7546ca242f5ec/nvim/lua/kiyoon/treesitter.lua#L140
-                        -- Just do <leader>i on a word or :InspectTree
-                        -- this stuff is fucking crazy. you can make your own ones
-                        -- based on what treesitter knows too: https://github.com/nvim-treesitter/nvim-treesitter-textobjects?tab=readme-ov-file#overriding-or-extending-textobjects
-                        ["af"] = "@function.outer",
-                        ["if"] = "@function.inner",
-                        ["al"] = "@loop.outer",
-                        ["il"] = "@loop.inner",
-                        ["aF"] = "@call.outer",
-                        ["ii"] = "@conditional.inner",
-                        ["ai"] = "@conditional.outer",
-                        ["iF"] = "@call.inner",
-                        ["ia"] = { query = "@parameter.inner", desc = "I love life" },
-                        ["i/"] = "@comment.inner",
-                        ["a/"] = "@comment.outer",
-                        ["in"] = "@number.inner",
-                        ["aa"] = "@parameter.outer",
-                        ["ik"] = "@block.inner",  -- dik
-                        ["ak"] = "@block.outer",
-                        ["ac"] = "@class.outer",
-                        ["ic"] = "@class.inner",
-                        -- ["i="] = "@assignment.inner",
-                        -- ["a="] = "@assignment.outer",
-                        ["as"] = { query = "@scope", query_group = "locals", desc = "Select big ass language scope" }
-                    },
                     include_surrounding_whitespace = false,
-                },
-                swap = {
-                    enable = true,
-                    swap_next = {
-                        [")m"] = "@function.outer",
-                        [")a"] = "@parameter.inner", --
-                        [")c"] = "@comment.outer",
-                        [")b"] = "@block.outer",
-                        [")l"] = "@class.outer",
-                        [")s"] = "@statement.outer",
-                        [")A"] = "@attribute.outer",
-                    },
-                    swap_previous = {
-                        ["(m"] = "@function.outer",
-                        ["(a"] = "@parameter.inner",
-                        ["(c"] = "@comment.outer",
-                        ["(b"] = "@block.outer",
-                        ["(l"] = "@class.outer",
-                        ["(s"] = "@statement.outer",
-                        ["(A"] = "@attribute.outer",
-                    },
+                    -- selection_modes can map captures to 'v'/'V'/'<c-v>' if you want
                 },
                 move = {
-                    enable = true,
-                    set_jumps = true, -- whether to set jumps in the jumplist
-                    goto_next_start = {
-                        ["]f"] = "@function.outer",
-                        -- ["]c"] = "@class.outer",
-                        -- ["]k"] = "@block.outer",
-                        -- ["]a"] = "@parameter.inner",
-                        -- ["]s"] = { query = "@scope", query_group = "locals"},
-                    },
-                    goto_next_end = {
-                        ["]F"] = "@function.outer",
-                        -- ["]C"] = "@class.outer",
-                        -- ["]K"] = "@block.outer",
-                        -- ["]A"] = "@parameter.inner",
-                        -- ["]S"] = { query = "@scope", query_group = "locals"},
-                    },
-                    goto_previous_start = {
-                        ["[f"] = "@function.outer",
-                        -- ["[c"] = "@class.outer",
-                        -- ["[k"] = "@class.outer",
-                        -- ["[a"] = "@parameter.inner",
-                        -- ["[s"] = { query = "@scope", query_group = "locals"},
-                    },
-                    goto_previous_end = {
-                        ["[F"] = "@function.outer",
-                        -- ["[C"] = "@class.outer",
-                        -- ["[K"] = "@class.outer",
-                        -- ["[A"] = "@parameter.inner",
-                        -- ["[S"] = { query = "@scope", query_group = "locals"},
-                    },
+                    set_jumps = true,
                 },
-            },  -- TEXTOBJS
-        } -- setup
-    end,
-    opts = {},
+            })
+
+            local select = require('nvim-treesitter-textobjects.select')
+            local swap   = require('nvim-treesitter-textobjects.swap')
+            local move   = require('nvim-treesitter-textobjects.move')
+
+            -- helper: select keymap in x + o
+            local function sel(lhs, capture, desc)
+                vim.keymap.set({ 'x', 'o' }, lhs, function()
+                    select.select_textobject(capture, 'textobjects')
+                end, { silent = true, desc = desc })
+            end
+
+            ---------------- SELECTS ----------------
+            sel('af', '@function.outer',  'a function')
+            sel('if', '@function.inner',  'inner function')
+            sel('al', '@loop.outer',      'a loop')
+            sel('il', '@loop.inner',      'inner loop')
+            sel('aF', '@call.outer',      'a call')
+            sel('iF', '@call.inner',      'inner call')
+            sel('ai', '@conditional.outer', 'a conditional')
+            sel('ii', '@conditional.inner', 'inner conditional')
+            sel('aa', '@parameter.outer', 'a parameter')
+            sel('ia', '@parameter.inner', 'I love life')
+            sel('a/', '@comment.outer',   'a comment')
+            sel('i/', '@comment.inner',   'inner comment')
+            sel('in', '@number.inner',    'inner number')
+            sel('ak', '@block.outer',     'a block')
+            sel('ik', '@block.inner',     'inner block')
+            sel('ac', '@class.outer',     'a class')
+            sel('ic', '@class.inner',     'inner class')
+
+            ---------------- SWAPS ----------------
+            local function swap_next(lhs, capture)
+                vim.keymap.set('n', lhs, function() swap.swap_next(capture) end,
+                    { silent = true, desc = 'swap next ' .. capture })
+            end
+            local function swap_prev(lhs, capture)
+                vim.keymap.set('n', lhs, function() swap.swap_previous(capture) end,
+                    { silent = true, desc = 'swap prev ' .. capture })
+            end
+
+            swap_next(')m', '@function.outer')
+            swap_next(')a', '@parameter.inner')
+            swap_next(')c', '@comment.outer')
+            swap_next(')b', '@block.outer')
+            swap_next(')l', '@class.outer')
+            swap_next(')s', '@statement.outer')
+            swap_next(')A', '@attribute.outer')
+
+            swap_prev('(m', '@function.outer')
+            swap_prev('(a', '@parameter.inner')
+            swap_prev('(c', '@comment.outer')
+            swap_prev('(b', '@block.outer')
+            swap_prev('(l', '@class.outer')
+            swap_prev('(s', '@statement.outer')
+            swap_prev('(A', '@attribute.outer')
+
+            ---------------- MOVES ----------------
+            vim.keymap.set({ 'n', 'x', 'o' }, ']f', function()
+                move.goto_next_start('@function.outer', 'textobjects')
+            end, { silent = true, desc = 'Next function start' })
+            vim.keymap.set({ 'n', 'x', 'o' }, '[f', function()
+                move.goto_previous_start('@function.outer', 'textobjects')
+            end, { silent = true, desc = 'Prev function start' })
+
+            -- Optional: make ; and , repeat the last TS move
+            -- local rep = require('nvim-treesitter-textobjects.repeatable_move')
+            -- vim.keymap.set({ 'n', 'x', 'o' }, ';', rep.repeat_last_move_next)
+            -- vim.keymap.set({ 'n', 'x', 'o' }, ',', rep.repeat_last_move_previous)
+        end,
+        dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    },
 }
 
 --  @block.inner

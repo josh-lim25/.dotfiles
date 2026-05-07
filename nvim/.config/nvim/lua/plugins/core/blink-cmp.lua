@@ -44,6 +44,8 @@ return {
         ['<C-n>'] = { 'select_next', 'fallback' },
         ['<C-p>'] = { 'select_prev', 'fallback' },
         ['<C-y>'] = { 'select_and_accept', 'fallback' },
+        ['<CR>'] = { 'select_and_accept', 'fallback' },
+        ['<Tab>'] = { 'select_and_accept', 'fallback' },
         ['<C-e>'] = { 'hide', 'fallback' },
         ['<C-j>'] = { 'snippet_forward', 'fallback' },
         ['<C-k>'] = { 'snippet_backward', 'fallback' },

@@ -1,31 +1,24 @@
 -- [[ DIAGNOSTICS ]] {{
--- [[ BASIC MAPPINGS ]]
 local keymap = vim.keymap.set
+
+-- [[ BASIC MAPPINGS ]]
+-- [d and ]d for jumpting to prev and next diagnostic is default, but doesn't show details
 keymap('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 keymap('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 keymap('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
 -- [[ TOGGLE DIAGNOSTICS ]]
 local diagnostics_enabled = true
-keymap('n', '<leader>td', function()
-    diagnostics_enabled = not diagnostics_enabled
+keymap('n', '<leader>dd', function()
+    diagnostics_enabled = not vim.diagnostic.is_enabled()
+    vim.diagnostic.enable(diagnostics_enabled)
     if diagnostics_enabled then
-        vim.diagnostic.enable()
         print("LSP diagnostics enabled")
     else
-        vim.diagnostic.disable()
         print("LSP diagnostics disabled")
     end
 end, { desc = 'Toggle LSP diagnostics' })
 
-
--- [[ DISABLE ALL LSP ]]
-local lsp_enabled = true
-keymap('n', '<leader>dl', function()
-    vim.cmd('LspStop')
-    -- vim.diagnostic.disable()
-    print("LSP disabled")
-end, { desc = 'Toggle all LSP functionality' })
 
 -- [[ VISUALS ]]
 vim.fn.sign_define('DiagnosticSignError', { text = '󰅚 ', texthl = 'DiagnosticSignError' })

@@ -1,5 +1,5 @@
 -- https://github.com/wfxr/dotfiles/blob/cd5227f0832581b7507b10358a130fd68396e247/vim/nvim/lua/plugins/editor.lua#L109
-return  {
+return {
   -- in editor
   {
     "iamcco/markdown-preview.nvim",
@@ -23,13 +23,11 @@ return  {
   -- in editor
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    opts = {
-      code = {
-        width = "block",
-        position = "left",
-        right_pad = 1,
-        left_pad = 1,
-      },
-    },
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },            -- if you use the mini.nvim suite
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' },        -- if you use standalone mini plugins
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = { },
   },
 }

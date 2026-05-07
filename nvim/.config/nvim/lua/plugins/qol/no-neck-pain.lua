@@ -27,6 +27,7 @@ return {
           enabled = false,
         },
         -- blend > 0 shows line on the side
+        background = "#1f1f28",
         colors = {
           blend = 0,
         },

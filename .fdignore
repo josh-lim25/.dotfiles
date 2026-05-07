@@ -1,0 +1,18 @@
+# Dev
+.git/
+.venv/
+node_modules/
+__pycache__/
+
+# Cache
+.cache/
+.mozilla/
+.config/google-chrome/
+.config/BraveSoftware/
+
+# Package managers
+.npm/
+.cargo/
+.gconf/
+.local/share/Trash/
+.snap/

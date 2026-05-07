@@ -4,6 +4,9 @@
 
 bindkey -v
 export KEYTIMEOUT=1  # 10ms ESC delay (snappy mode switching)
+# For ~/.local/bin/scripts/fzf-git.sh
+bindkey -M viins -r '^G'
+bindkey -M vicmd -r '^G'
 
 # Restore some keymaps removed by vi keybind mode
 bindkey '^p' history-search-backward

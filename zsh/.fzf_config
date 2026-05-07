@@ -1,15 +1,15 @@
 # [[ OPTIONS ]]
-export FZF_TMUX_OPTS="-p90%,80%"
+# export FZF_TMUX_OPTS="-p90%,80%"
 export FZF_DEFAULT_COMMAND="fd --strip-cwd-prefix --hidden --follow --exclude '.git'"
+
+# multiselect (-m). Ctrl+I also acts as Tab
+# To enable tmux popup, add: --tmux center,85%,85%
+# To enable rounded border, add: --border rounded
 export FZF_DEFAULT_OPTS="
-    --tmux center,85%,85%
+    --preview-window hidden
     --layout reverse
-    --border rounded
-    --no-preview
-    --prompt='▶ '
-    --pointer='→'
-    --marker='✔'
-    --bind='ctrl-a:select-all,ctrl-x:deselect-all'
+    --margin=1
+    -m
 "
 
 # [[ COLORSCHEME ]]
@@ -19,28 +19,60 @@ export FZF_DEFAULT_OPTS="
 # bg+: highlight on cursor line
 # hl: color of matched pattern
 # hl+: highlight of matched pattern on cursor line
+# info: line number / match count text on the info line
+# marker: glyph shown next to multi-selected lines
+# spinner: the loading spinner shown while fzf is reading input
+# pointer: the cursor-line indicator (e.g. ">" pointing at the current line)
+# header: the optional header text shown above the list
+# border: the outer border drawn around the fzf window
+# gutter: the narrow column on the left of the list (where the pointer/marker sit)
+# separator: the horizontal rule between the info line and the list
+# label: the text of border/preview labels (--border-label, --preview-label)
+# query: the text you've typed into the prompt
 
 # adapted using tomorrow-night colors
+# _FZF_COLOR=(
+#     fg:#c5c8c6
+#     fg+:#c5c8c6:bold
+#     bg:#1d1f21
+#     bg+:#43436c
+#     # bg+:#373b41
+#     hl:#7E9CD8
+#     hl+:#7FB4CA
+#     info:#b5bd68
+#     marker:#b5bd68
+#     prompt:#b294bb
+#     spinner:#5e8d87
+#     pointer:#f0c674
+#     header:#81a2be
+#     border:#707880
+#     gutter:#1d1f21
+#     separator:#282a2e
+#     label:#81a2be
+#     query:#c5c8c6:regular
+# )
+
+# kanagawa paper
 _FZF_COLOR=(
-    fg:#c5c8c6
-    fg+:#c5c8c6:bold
-    bg:#1d1f21
+    fg:#dcd7ba
+    fg+:#dcd7ba:bold
+    bg:#1f1f28
     bg+:#43436c
-    # bg+:#373b41
-    hl:#7E9CD8
-    hl+:#7FB4CA
-    info:#b5bd68
-    marker:#b5bd68
-    prompt:#b294bb
-    spinner:#5e8d87
-    pointer:#f0c674
-    header:#81a2be
-    border:#707880
-    gutter:#1d1f21
-    separator:#282a2e
-    label:#81a2be
-    query:#c5c8c6:regular
+    hl:#859fac
+    hl+:#8ea49e
+    info:#699469
+    marker:#c4b28a
+    prompt:#a292a3
+    spinner:#8ea49e
+    pointer:#c4b28a
+    header:#658594
+    border:#625e5a
+    gutter:#1f1f28
+    separator:#2a2a37
+    label:#658594
+    query:#dcd7ba:regular
 )
+
 
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color=\"${_FZF_COLOR[*]}\""
 

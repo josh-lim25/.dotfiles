@@ -48,8 +48,10 @@ bindkey '^v' fzf_references
 # TODO: figure out if you want ~/.local/bin/scripts/ff
 f() {
     command -v fzf >/dev/null 2>&1 || { echo "Install fzf first!"; return 1; }
-    # local file=$(fzf --preview="cat {}")
-    local file=$(fzf --preview="bat --style=numbers --color=always {}")
+    # local file=$(fzf --preview="cat {}")            # IF NO BAT
+    # local file=$(fzf --preview="bat --style=numbers --color=always {}")
+    # to make it always start from home
+    local file=$(cd "$HOME" && fzf --preview="bat --style=numbers --color=always {}")
     [[ -n "$file" ]] && nvim "$file"
 }
 
