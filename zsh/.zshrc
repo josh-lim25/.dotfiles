@@ -37,7 +37,7 @@ export PATH=$PATH:~/.local/bin/scripts
 export EDITOR="$(which nvim)"
 export VISUAL="$(which nvim)"
 export FCEDIT="$(which nvim)"
-export MANPAGER='nvim +Man!'
+export MANPAGER="$(which nvim) +Man!"
 # export NVIM_APPNAME='nvim.bak'
 # export NVIM_APPNAME='nvim-test'
 export NVIM_APPNAME='nvim'
@@ -150,19 +150,6 @@ abbrev-alias cdtest="cd ~/spaghetti/test/"
 abbrev-alias cdgit="cd ~/Documents/git_testing/"
 abbrev-alias cdrs="cd ~/spaghetti/langs/rust/testing_grounds/"
 
-# [[ PROJECT-SPECIFIC ]]
-abbrev-alias cdip="cd ~/research-projects/seed-emulator/examples/internet/B28_traffic_generator/0-iperf-traffic-generator"
-abbrev-alias cdlogs="cd /home/josh/research-projects/seed-emulator/examples/internet/B28_traffic_generator/0-iperf-traffic-generator/logs"
-abbrev-alias cdbug="cd ~/repos/buildkit/control/gateway/"
-# abbrev-alias s="source development.env && source seedenv/bin/activate"
-abbrev-alias lsout='ls ./output | wc -l'
-
-# [[ SHELL ]]
-abbrev-alias watchdir="watch -g -n 0.1 ls"
-
-# [[ GIT ]]
-abbrev-alias g="git "
-
 # [[ DOCKER ]]
 abbrev-alias dc="docker compose"
 abbrev-alias dcbuild="docker compose build"
@@ -192,12 +179,10 @@ cargo clippy -- \
 '
 
 # [[ GO ]] {{
-abbrev-alias gorun='ls *.go | entr -c go run /_' # e.g., rungo test.txt
-
 # check for new available package updates
 abbrev-alias gocheck="go list -u -f '{{if (and (not (or .Main .Indirect)) .Update)}}{{.Path}}: {{.Version}} -> {{.Update.Version}}{{end}}' -m all"
 
-# https://github.com/lotusirous/gostdsym#installation
+# NOTE: https://github.com/lotusirous/gostdsym#installation
 # [G]o [O]pen [D]ocs
 alias god='stdsym | fzf --preview "go doc {} | bat -l go --color=always --style=plain" \
              --preview-window "right,60%,border-left" \
@@ -205,9 +190,6 @@ alias god='stdsym | fzf --preview "go doc {} | bat -l go --color=always --style=
 # [G]o [O]pen [D]ocs e[X]ecute in browser
 alias godx='stdsym -web | fzf --prompt "Symbols> " --preview "go doc \$(echo {} | sed s/#/./g)" --bind "enter:become( echo "https://pkg.go.dev/{}" |xargs xdg-open)"'
 # }}
-
-# [[ SQL ]]
-alias mysql='mariadb'
 
 # [[ TMUX ]]
 abbrev-alias t="tmux"
@@ -261,10 +243,13 @@ alias pkg="pacman -Qq | fzf \
 
 
 # [[ "QOL" ]]
+# `ddcutil --display 1 getvcp 10` to see what brightness is at. 10 is "brightness"
+alias mondown='ddcutil --display 1 setvcp 10 50'
+alias monup='ddcutil --display 1 setvcp 10 100'
 alias dim='wlsunset -s $(date +%H:%M) -t 4000 &'
 alias vdiff='nvim -d'
 alias py='python3'
-alias tree="tree -C -L 3 -a -I '.git' --charset X " # -C for color
+# alias tree="tree -C -L 3 -a -I '.git' --charset X " # -C for color
 alias minitree="tree -aCL 3 --prune"
 alias dirtree="tree -L 3 -a -d -I '.git' --charset X "
 alias todo='nvim ~/misc/TODO.md'
@@ -302,3 +287,4 @@ jj() {
     javac "$filename" && java "$stripped"
 }
 # }}
+alias u="v ~/.dotfiles/doc/ubuntu.md"

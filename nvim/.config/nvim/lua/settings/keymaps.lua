@@ -77,8 +77,8 @@ keymap("v", ">", ">gv", opts)
 keymap("n", "<leader>so", ":.!sh<cr>", { noremap = true, desc = "[S]hell [O]utput" })
 
 -- [[ ANTI-TEXTWRAP ]]
--- keymap({ "n", "v" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
--- keymap({ "n", "v" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+keymap({ "n", "v" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+keymap({ "n", "v" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- [[ VERTICAL MVMT ]]
 keymap("n", "<C-d>", "<C-d>zz", opts)
@@ -240,6 +240,7 @@ local abbreviations = {
   recieve = "receive",
   strcut = "struct",
   cosnt = "const",
+  isntalled = "installed",
   sf = "static final",
   -- [">>"] = "→",  // holy mother of god is this annoying for i →= 1
   -- ["<<"] = "←",

@@ -127,6 +127,9 @@ return {
             --  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
             --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
             local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+            -- TODO: fix this mess
+            --[[
             local servers = {
                 -- https://github.com/golang/tools/blob/master/gopls/doc/analyzers.md
                 -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md
@@ -209,6 +212,7 @@ return {
                     },
                 },
             }
+            ]]
 
             -- `mason` had to be setup earlier: to configure its options see the
             -- `dependencies` table for `nvim-lspconfig` above.
@@ -216,13 +220,16 @@ return {
             -- for you, so that they are available from within Neovim.
             local ensure_installed = vim.tbl_keys(servers or {})
             vim.list_extend(ensure_installed, {
-                -- NOTE: just putting formatters here
+                -- NOTE: putting formatters here
+                -- TODO: fix mess, part of :131
+                --[[
                 "jdtls",
                 "stylua", -- Lua
                 "tree-sitter-cli",
-                -- 'golangci-lint',  -- BAD: use pacman
-                -- 'prettierd', -- md, js code
-                -- 'markdownlint',
+                'golangci-lint',
+                'prettierd', -- md, js code
+                'markdownlint',
+                ]]
             })
             require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

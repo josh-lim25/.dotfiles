@@ -1,36 +1,46 @@
 #!/usr/bin/env bash
-
-# src: https://www.reddit.com/r/golang/comments/138dhlr/update_go_version_from_cli/?utm_source=chatgpt.com
-
-# NOTE: **Do not** untar the archive into an existing /usr/local/go tree. This is known to produce broken Go installations. See https://go.dev/doc/install
-
+# Source: https://go.dev/doc/install
 set -euo pipefail
 
-version=$(go version | cut -d' ' -f 3)
-release=$(wget -qO- "https://golang.org/VERSION?m=text")
+# Get current and latest version
+current_version=$(go version 2>/dev/null | cut -d' ' -f 3 || echo "none")
+latest_release=$(curl -sSL "https://go.dev" | head -n 1)
 
-if [[ $version == "$release" ]]; then
-    echo "The local Go version ${release} is up-to-date."
+if [[ "$current_version" == "$latest_release" ]]; then
+    echo "The local Go version ${latest_release} is up-to-date."
     exit 0
 else
-    echo "The local Go version is ${version}. A new release ${release} is available."
+    echo "Current Go version: ${current_version}. New release available: ${latest_release}."
 fi
 
-release_file="${release}.linux-amd64.tar.gz"
+# Define paths
+TARGET_DIR="${HOME}/apps"
+release_file="${latest_release}.linux-amd64.tar.gz"
 
+# Ensure target directory exists
+mkdir -p "$TARGET_DIR"
+
+# Create secure temporary working directory
 tmp=$(mktemp -d)
-cd $tmp || exit 1
+trap 'rm -rf "$tmp"' EXIT
 
-echo "Downloading https://go.dev/dl/$release_file ..." 
-curl -OL https://go.dev/dl/$release_file
+echo "Downloading https://go.dev/dl/$release_file ..."
+curl -sSL -o "$tmp/$release_file" "https://go.dev/dl/$release_file"
 
-rm -f ${HOME}/apps/go 2>/dev/null
+echo "Extracting to temporary location..."
+# Extract inside tmp to avoid overwriting anything prematurely
+tar -C "$tmp" -xzf "$tmp/$release_file"
 
-tar -C ${HOME}/apps -xzf $release_file
-rm -rf $tmp
+# Remove existing specific version folder if it exists to avoid conflicts
+rm -rf "${TARGET_DIR}/${latest_release}"
 
-mv ${HOME}/apps/go ${HOME}/apps/$release
-ln -sf ${HOME}/apps/$release ${HOME}/apps/go
+# Move the newly extracted 'go' folder to its versioned name
+mv "$tmp/go" "${TARGET_DIR}/${latest_release}"
 
-version=$(go version|cut -d' ' -f 3)
-echo "Now, local Go version is $version"
+# Update the symlink atomically
+ln -sfn "${TARGET_DIR}/${latest_release}" "${TARGET_DIR}/go"
+
+# Verify update
+# Note: Ensure ${HOME}/apps/go/bin is at the front of your PATH variable
+new_version=$("${TARGET_DIR}/go/bin/go" version | cut -d' ' -f 3)
+echo "Successfully updated! Now local Go version is $new_version"

@@ -24,8 +24,8 @@ return {
             -- Conform will run the first available formatter
             -- javascript = { "prettierd", "prettier", stop_after_first = true },
             -- typescript = { "prettierd", "prettier", stop_after_first = true },
-            ["markdown"] = { { "prettierd", "prettier" } },
-            ["markdown.mdx"] = { { "prettierd", "prettier" } },
+            ["markdown"] = { "prettierd", "prettier", stop_after_first = true },
+            ["markdown.mdx"] = { "prettierd", "prettier", stop_after_first = true },
             -- -- Use the "*" filetype to run formatters on all filetypes.
             -- ["*"] = { "codespell" },
             -- -- Use the "_" filetype to run formatters on filetypes that don't

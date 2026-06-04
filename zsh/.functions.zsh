@@ -29,7 +29,7 @@
 
 # [[ INCLUDES DIRPATH ]]
 fzf_references() {
-  local file=$(find ~/spaghetti/refs \( -type f -o -type l \) -printf "%P\n" | fzf)
+  local file=$(fd --type f --type l --base-directory ~/spaghetti/refs | fzf)
   if [[ -n "$file" ]]; then
     BUFFER="nvim ~/spaghetti/refs/$file"
     zle accept-line
@@ -41,18 +41,24 @@ bindkey '^v' fzf_references
 # }}
 
 # [[ BASICS ]] {{
-
+# TODO: ls on entering some dir. breaks for `..` and weird output
+# chpwd() {
+#     l
+# }
 # [[ FIND A FILE AND OPEN IT WITH NVIM ]]
 # note that this requires that nvim, fzf, and bat are installed
 # old soln: alias f='fzf --print0 | xargs -0 --no-run-if-empty -- nvim'
 # TODO: figure out if you want ~/.local/bin/scripts/ff
 f() {
-    command -v fzf >/dev/null 2>&1 || { echo "Install fzf first!"; return 1; }
-    # local file=$(fzf --preview="cat {}")            # IF NO BAT
-    # local file=$(fzf --preview="bat --style=numbers --color=always {}")
-    # to make it always start from home
-    local file=$(cd "$HOME" && fzf --preview="bat --style=numbers --color=always {}")
-    [[ -n "$file" ]] && nvim "$file"
+  command -v fzf >/dev/null 2>&1 || { echo "Install fzf first!"; return 1; }
+  command -v bat >/dev/null 2>&1 || { echo "Install bat first!"; return 1; }
+
+  # The parenthesis () ensure the directory change doesn't leak out
+  (
+    cd "$HOME" || return 1
+    local file=$(fzf --preview "bat --style=numbers --color=always {}")
+    [[ -n $file ]] && nvim "$file"
+  )
 }
 
 # [[ CREATE DIR AND CD INTO IT ]]

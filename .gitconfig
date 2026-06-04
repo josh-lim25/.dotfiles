@@ -1,5 +1,5 @@
 [user]
-	name = JoshuaLim25
+	name = josh-lim25
 	email = chillythermometer@gmail.com
 [init]
 	defaultBranch = main
@@ -29,7 +29,7 @@
 	helper = store --file ~/.dotfiles/gitcredentials
 [alias]
 	# NOTE: why I migrated from .zshrc aliases - https://www.reddit.com/r/git/comments/1duhi1u/better_git_shell_aliases/
-	# > If you're creating external commands, you don't even need aliases. If `git foo` isn't recognized by git, it will look for `git-foo` in your $PATH and run it. In fact some of the "core" git tools are written like this, see ls -l /usr/lib/git-core for which ones aren't symlinks to /usr/bin/git, many of them are shell or perl scripts. 
+	# > If you're creating external commands, you don't even need aliases. If `git foo` isn't recognized by git, it will look for `git-foo` in your $PATH and run it. In fact some of the "core" git tools are written like this, see ls -l /usr/lib/git-core for which ones aren't symlinks to /usr/bin/git, many of them are shell or perl scripts.
 
 	# Basics
 	s = status
@@ -41,7 +41,7 @@
     lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
 	ll = log --graph --decorate
 	ls = ls-files
-	lla = ls-files --cached --deleted --modified --others --exclude-standard 
+	lla = ls-files --cached --deleted --modified --others --exclude-standard
 
 	# Branches and remotes
 	b = branch

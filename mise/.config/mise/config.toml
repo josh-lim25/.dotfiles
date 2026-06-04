@@ -1,7 +1,5 @@
 [tools]
 node = "latest"
+
 "npm:yarn" = "latest"
 "npm:@google/gemini-cli" = "latest"
-"npm:node-gyp" = "latest"
-"npm:semver" = "latest"
-"npm:@qwen-code/qwen-code" = "latest"

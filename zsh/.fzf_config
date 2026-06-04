@@ -87,7 +87,8 @@ export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap 
 # NOTE: zsh-specific history widget binding
 fzf-history-widget-accept() {
   fzf-history-widget
-  zle accept-line
+  # zle accept-line  # this auto-runs selected cmd
+  zle reset-prompt
 }
 zle     -N     fzf-history-widget-accept
 bindkey -r '^R' # unbind: https://unix.stackexchange.com/questions/285208/how-to-remove-a-zsh-keybinding-if-i-dont-know-what-it-does

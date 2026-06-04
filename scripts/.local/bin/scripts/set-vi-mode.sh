@@ -18,6 +18,12 @@ bindkey -M vicmd "^e" end-of-line
 bindkey -M viins "^d" delete-char-or-list
 bindkey -M vicmd "^d" delete-char
 
+# qol
+bindkey -M vicmd 'H' vi-beginning-of-line
+bindkey -M vicmd 'L' vi-end-of-line
+bindkey -M visual 'H' vi-beginning-of-line
+bindkey -M visual 'L' vi-end-of-line
+
 function vi-yank-clip {
   zle vi-yank
   echo -n "$CUTBUFFER" | wl-copy

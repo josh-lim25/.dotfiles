@@ -1,4 +1,4 @@
-# See https://stackoverflow.com/questions/18880024/start-ssh-agent-on-login
+; 1. See https://stackoverflow.com/questions/18880024/start-ssh-agent-on-login
 [Unit]
 Description=SSH key agent
 
@@ -10,3 +10,19 @@ Restart=on-failure
 
 [Install]
 WantedBy=default.target
+
+
+; 2. Set up the shell to have an environment variable for the socket (.bash_profile file, .zshrc file, it's in .zshrc):
+
+; export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
+; NOTE: 3. Enable the service, so it'll be started automatically on login, and start it:
+
+; systemctl --user enable ssh-agent
+; systemctl --user start ssh-agent
+
+; NOTE: 4. Add the following configuration setting to your local ssh config file ~/.ssh/config (this works since SSH 7.2):
+
+; AddKeysToAgent    yes
+
+; This will instruct the SSH client to always add the key to a running agent, so there isn't any need to ssh-add it beforehand.
