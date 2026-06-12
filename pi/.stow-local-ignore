@@ -1,0 +1,9 @@
+# Ignore settings backups
+^.*settings\.json\.bak$
+
+# Ignore the sessions folder and anything inside it
+^.*\.pi/agent/sessions/.*
+
+# Ignore chat history or temporary .jsonl log files
+^.*\.jsonl$
+

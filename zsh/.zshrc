@@ -37,7 +37,7 @@ export PATH=$PATH:~/.local/bin/scripts
 export EDITOR="$(which nvim)"
 export VISUAL="$(which nvim)"
 export FCEDIT="$(which nvim)"
-export MANPAGER="$(which nvim) +Man!"
+# export MANPAGER="$(which nvim) +Man!"
 # export NVIM_APPNAME='nvim.bak'
 # export NVIM_APPNAME='nvim-test'
 export NVIM_APPNAME='nvim'
@@ -77,8 +77,8 @@ zinit light kutsan/zsh-system-clipboard
 # [[ SNIPPETS ]]
 # Don't use, but could be worth looking at
 # `rm -rf .local/share/zinit/snippets`
-zinit snippet OMZP::archlinux
-# zinit snippet OMZP::git
+# zinit snippet OMZP::archlinux
+zinit snippet OMZP::git
 # zinit snippet OMZP::sudo
 # zinit snippet OMZP::aws
 # zinit snippet OMZP::kubectl
@@ -163,7 +163,8 @@ alias ctop='TERM="${TERM/#tmux/screen}" ctop'
 
 # [[ MISE ]]
 # https://mise.jdx.dev/getting-started.html#activate-mise
-eval "$(~/.local/bin/mise activate zsh)"
+# eval "$(~/.local/bin/mise activate zsh)"
+eval "$(/snap/bin/mise activate zsh)"
 
 # [[ JAVA ]]
 # export JAVA_HOME=/path/to/new/jdk
@@ -288,3 +289,9 @@ jj() {
 }
 # }}
 alias u="v ~/.dotfiles/doc/ubuntu.md"
+
+# Server
+alias wl-copy="~/.local/bin/scripts/osc-copy"
+
+# opencode
+export PATH=/home/josh/.opencode/bin:$PATH

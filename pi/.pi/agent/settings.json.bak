@@ -1,0 +1,11 @@
+{
+  "lastChangelogVersion": "0.79.7",
+  "theme": "dark",
+  // "defaultProvider": "nvidia",
+  // "defaultModel": "nvidia/nemotron-3-super-120b-a12b",
+  "defaultProvider": "ollama",
+  "defaultModel": "phi4-mini",
+  "defaultThinkingLevel": "medium",
+  "httpIdleTimeoutMs": 0,
+  "enableInstallTelemetry": false
+}

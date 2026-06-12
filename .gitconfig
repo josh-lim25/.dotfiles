@@ -1,6 +1,6 @@
 [user]
 	name = josh-lim25
-	email = chillythermometer@gmail.com
+    email = joshua.lim@canonical.com
 [init]
 	defaultBranch = main
 [core]
@@ -50,6 +50,8 @@
 	; force-push that refuses to overwrite upstream work that I haven’t seen
 	pf = push --force-with-lease
 	sw = switch
+    ; check what you're going to push, https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection#Double%20Dot:~:text=Double%20Dot
+    check = log origin/master..
 
 
 	# Diffs

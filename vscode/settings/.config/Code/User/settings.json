@@ -1,0 +1,57 @@
+{
+  // for performance: https://github.com/vscode-neovim/vscode-neovim/issues/1051
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  "editor.semanticHighlighting.enabled": true,
+  // adjust path to `which nvim`
+  "vscode-neovim.neovimExecutablePaths.linux": "/snap/bin/nvim",
+  "vscode-neovim.neovimInitVimPaths.linux": "/home/josh/.config/nvim-vscode/init.lua",
+  // REQUIRED on Linux, or remapped <Esc> and similar keys misfire.
+  "keyboard.dispatch": "keyCode",
+  "editor.lineNumbers": "relative",
+  // from vim's scrolloff=999: keeps the cursor line near-centered. This replaces
+  // <C-d>zz / nzzzv centering remaps, so those are intentionally dropped.
+  "editor.cursorSurroundingLines": 999,
+  "editor.cursorSurroundingLinesStyle": "all",
+  "editor.minimap.enabled": false,
+  // "editor.smoothScrolling": false,
+  // "workbench.list.smoothScrolling": false,
+  "editor.cursorBlinking": "solid",
+  "editor.cursorSmoothCaretAnimation": "off",
+  "editor.experimental.asyncTokenization": true,
+  "workbench.editor.enablePreview": false,
+  "workbench.startupEditor": "none",
+  "telemetry.telemetryLevel": "off",
+  "update.mode": "manual",
+  "extensions.autoUpdate": false,
+  // formatting / inlay hints
+  "editor.formatOnSave": true,
+  "editor.inlayHints.enabled": "on",
+  // Go
+  // "[go]": {
+  //   "editor.defaultFormatter": "golang.go",
+  //   "editor.formatOnSave": true,
+  //   "editor.codeActionsOnSave": {
+  //     "source.organizeImports": "explicit"
+  //   }
+  // },
+  // "go.useLanguageServer": true,
+  // // Use the gopls/tools installed on system; don't let the extension manage them.
+  // "go.toolsManagement.checkForUpdates": "off",
+  // // From `go env`:
+  // "go.goroot": "/home/josh/go",
+  // "go.gopath": "/home/josh/go-workspace",
+  // "gopls": {
+  //   "ui.semanticTokens": true,
+  //   "formatting.gofumpt": false
+  // },
+  "workbench.colorTheme": "Kanagawa Paper Ink (custom)",
+  // "workbench.colorTheme": "Kanagawa Paper Ink",
+  // "workbench.colorCustomizations": {
+  // "[Kanagawa Paper Ink]": {
+  //   "editor.findMatchBackground": "#43436c",
+  //   "editor.findMatchHighlightBackground": "#43436c66"
+  // }
+  // },
+}
