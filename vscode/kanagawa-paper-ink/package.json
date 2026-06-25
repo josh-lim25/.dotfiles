@@ -1,0 +1,1 @@
+{"name":"kanagawa-paper-ink","publisher":"local","version":"1.0.0","engines":{"vscode":"*"},"contributes":{"themes":[{"label":"Kanagawa Paper Ink (custom)","uiTheme":"vs-dark","path":"./theme.json"}]}}

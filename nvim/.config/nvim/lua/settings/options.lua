@@ -3,12 +3,25 @@
 local o = vim.opt
 
 -- [[ ESSENTIAL ]] {{
+-- [[ CLIPBOARD ]]
 -- Use system clipboard locally, OSC 52 over SSH
-if os.getenv("SSH_TTY") or os.getenv("SSH_CLIENT") then
-  vim.g.clipboard = 'osc52'
-else
-  o.clipboard = 'unnamedplus'
+o.clipboard = 'unnamedplus'
+-- Native clipboard needs a local display; a headless SSH box has none, so use
+-- OSC 52 there. Gate on the display, not $SSH_TTY (tmux caches a stale value).
+if not (os.getenv('WAYLAND_DISPLAY') or os.getenv('DISPLAY')) then
+  local osc52 = require('vim.ui.clipboard.osc52')
+  -- Paste from the local register instead of an OSC 52 read (which freezes and
+  -- trips your read-clipboard-ask prompt). Host->server paste is Ctrl+Shift+V.
+  local function paste()
+    return { vim.fn.split(vim.fn.getreg('"'), '\n'), vim.fn.getregtype('"') }
+  end
+  vim.g.clipboard = {
+    name = 'OSC 52',
+    copy  = { ['+'] = osc52.copy('+'),  ['*'] = osc52.copy('*') },
+    paste = { ['+'] = paste,            ['*'] = paste },
+  }
 end
+
 o.virtualedit = 'block'                  -- visual block mode cool behavior
 o.vb = true                              -- never ever make my terminal beep
 o.mouse = 'a'                            -- enable mouse mode

@@ -6,29 +6,18 @@ return {
         enableOnVimEnter = true,
         skipEnteringNoNeckPainBuffer = true, -- true if you don't want scratchpad
       },
-      -- width = 70, -- higher val means smaller buffers
-      width = 65,
+      -- higher val means smaller buffers on the sides
+      width = 100,
       mappings = {
         enabled = true,
-        toggle = "<Leader>tn",
-        -- -- Sets a global mapping to Neovim, which allows you to toggle the each side buffer.
-        -- toggleLeftSide = '<Leader>tb', -- toggle buffer, not needed w/only one
-        -- toggleRightSide = '<Leader>nqr',
-        -- -- Sets a global mapping to Neovim, which allows you to increase the width (+5) of the main window.
-        -- widthUp = '<Leader>n=',
-        -- -- Sets a global mapping to Neovim, which allows you to decrease the width (-5) of the main window.
-        -- widthDown = '<Leader>n-',
-        -- -- Sets a global mapping to Neovim, which allows you to toggle the scratchPad feature.
-        -- scratchPad = '<Leader>ns',
+        toggle = "<leader>tn",
       },
       buffers = {
         -- no buffer on the right
-        right = {
-          enabled = false,
-        },
+        right = { enabled = false, },
         -- blend > 0 shows line on the side
-        background = "#1f1f28",
         colors = {
+          background = "#1f1f28",   -- remove if you want the dividing line
           blend = 0,
         },
         -- no eol chars (~)

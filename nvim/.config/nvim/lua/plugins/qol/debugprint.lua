@@ -29,15 +29,15 @@ return {
                 textobj_above = "",
                 textobj_surround = "",
                 toggle_comment_debug_prints = "",
-                delete_debug_prints = "<leader>dld",
+                delete_debug_prints = "<leader>ld",
             },
             insert = {
                 plain = "",
-                variable = "<C-D>l",
+                variable = "",
             },
             visual = {
-                variable_below = "",
-                variable_above = "",
+                variable_below = "<leader>l",
+                variable_above = "<leader>L",
             },
         },  -- keymaps
         -- vim.api.nvim_set_hl(0, 'DebugPrintLine', { fg = "#de935f", bg = "" }),
@@ -49,7 +49,8 @@ return {
             -- Construction of debug statment is as follows:
             -- left_var + "DEBUG[1]: main.go:8: VAR=" + mid_var + VAR + right_var
             ["go"] = {
-                left_var = 'fmt.Fprintf(os.Stderr, "',
+                -- left_var = 'fmt.Fprintf(os.Stderr, "',
+                left_var = 'fmt.Printf("',
                 right = '\\n")',
                 mid_var = '%+v\\n", ',
                 -- mid_var = '%#v\\n", ',
@@ -64,7 +65,7 @@ return {
                 -- mid_var handles the format specifier, closing the quote, and the comma.
                 -- We use %s because it works for ints, objects, and strings.
                 -- Java will throw an exception if you use %d on a String, but %s is universal.
-                mid_var = '%s", ', 
+                mid_var = '%s", ',
                 right_var = '));',
             },
         }

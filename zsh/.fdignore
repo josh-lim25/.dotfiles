@@ -1,0 +1,4 @@
+.local/state/
+.local/share/
+.cache/
+node_modules/

@@ -102,3 +102,11 @@ Restart=on-failure
 WantedBy=default.target
 ```
 
+
+## Font
+- Jetbrains Mono Medium -> Hack Regular
+- [Download Hack font](https://sourcefoundry.org/hack/)
+```sh
+# The last line basically just refreshes font cache
+mkdir -p ~/.local/share/fonts && unzip ~/Downloads/Hack*.zip -d ~/.local/share/fonts/ && fc-cache -f -v
+```

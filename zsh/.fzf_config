@@ -1,34 +1,21 @@
-# [[ OPTIONS ]]
-# export FZF_TMUX_OPTS="-p90%,80%"
-export FZF_DEFAULT_COMMAND="fd --strip-cwd-prefix --hidden --follow --exclude '.git'"
-
-# multiselect (-m). Ctrl+I also acts as Tab
-# To enable tmux popup, add: --tmux center,85%,85%
-# To enable rounded border, add: --border rounded
-export FZF_DEFAULT_OPTS="
-    --preview-window hidden
-    --layout reverse
-    --margin=1
-    -m
-"
-
 # [[ COLORSCHEME ]]
-# fg: the text for everything
-# fg+: the highlighted text
-# bg: general background color
-# bg+: highlight on cursor line
-# hl: color of matched pattern
-# hl+: highlight of matched pattern on cursor line
-# info: line number / match count text on the info line
-# marker: glyph shown next to multi-selected lines
-# spinner: the loading spinner shown while fzf is reading input
-# pointer: the cursor-line indicator (e.g. ">" pointing at the current line)
-# header: the optional header text shown above the list
-# border: the outer border drawn around the fzf window
-# gutter: the narrow column on the left of the list (where the pointer/marker sit)
-# separator: the horizontal rule between the info line and the list
-# label: the text of border/preview labels (--border-label, --preview-label)
-# query: the text you've typed into the prompt
+# What each options means:
+# fg:         the text for everything
+# fg+:        the highlighted text
+# bg:         general background color
+# bg+:        highlight on cursor line
+# hl:         color of matched pattern
+# hl+:        highlight of matched pattern on cursor line
+# info:       line number / match count text on the info line
+# marker:     glyph shown next to multi-selected lines
+# spinner:    the loading spinner shown while fzf is reading input
+# pointer:    the cursor-line indicator (e.g. ">" pointing at the current line)
+# header:     the optional header text shown above the list
+# border:     the outer border drawn around the fzf window
+# gutter:     the narrow column on the left of the list (where the pointer/marker sit)
+# separator:  the horizontal rule between the info line and the list
+# label:      the text of border/preview labels (--border-label, --preview-label)
+# query:      the text you've typed into the prompt
 
 # adapted using tomorrow-night colors
 # _FZF_COLOR=(
@@ -53,6 +40,8 @@ export FZF_DEFAULT_OPTS="
 # )
 
 # kanagawa paper
+# _FZF_COLOR='bg:-1,bg+:#2A2A37,fg:-1,fg+:#DCD7BA,hl:#938AA9,hl+:#c4746e,header:#b6927b,info:#658594,pointer:#7AA89F,marker:#7AA89F,prompt:#c4746e,spinner:#8ea49e'
+
 _FZF_COLOR=(
     fg:#dcd7ba
     fg+:#dcd7ba:bold
@@ -62,7 +51,7 @@ _FZF_COLOR=(
     hl+:#8ea49e
     info:#699469
     marker:#c4b28a
-    prompt:#a292a3
+    prompt:#c4746e
     spinner:#8ea49e
     pointer:#c4b28a
     header:#658594
@@ -73,39 +62,35 @@ _FZF_COLOR=(
     query:#dcd7ba:regular
 )
 
+# [[ OPTIONS ]]
+# export FZF_TMUX_OPTS="-p90%,80%"
+export FZF_DEFAULT_COMMAND="fd --strip-cwd-prefix --hidden --follow --exclude .git"
+export FZF_DEFAULT_OPTS="
+    --layout reverse
+    --margin=1
+    --scheme=path
+"
 
-export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color=\"${_FZF_COLOR[*]}\""
+# multiselect (-m). Ctrl+I also acts as Tab
+# To enable tmux popup, add: --tmux center,85%,85%
+# To enable rounded border, add: --border rounded
+export FZF_DEFAULT_OPTS="
+    --layout reverse
+    --margin=1
+"
 
-export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude '.git'"
-# https://github.com/junegunn/fzf/wiki/Configuring-shell-key-bindings#ctrl-t
-export FZF_CTRL_T_OPTS="--select-1 --exit-0 --preview 'bat --color=always -n --line-range :500 {}'"
-export FZF_ALT_C_OPTS="--select-1 --exit-0 --preview 'eza --icons=always --tree --color=always {} | head -200'"
-# export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
-# src: https://github.com/junegunn/fzf/wiki/Configuring-shell-key-bindings#full-command-on-preview-window
-export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
+export FZF_CTRL_T_OPTS="--select-1"
+export FZF_ALT_C_OPTS="--select-1"
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color=${(j:,:)_FZF_COLOR}"
+unset _FZF_COLOR
 
-# NOTE: zsh-specific history widget binding
-fzf-history-widget-accept() {
-  fzf-history-widget
-  # zle accept-line  # this auto-runs selected cmd
-  zle reset-prompt
-}
-zle     -N     fzf-history-widget-accept
-bindkey -r '^R' # unbind: https://unix.stackexchange.com/questions/285208/how-to-remove-a-zsh-keybinding-if-i-dont-know-what-it-does
-bindkey '^R' fzf-history-widget-accept
-
-# fzf integration with git
-# src: https://github.com/junegunn/fzf-git.sh
-source ~/.dotfiles/scripts/.local/bin/scripts/fzf-git.sh
-# INFO: use `bindkey -L` :) and `echo "CtrlVEsc/"`
-# https://superuser.com/questions/169920/binding-fn-delete-in-zsh-on-mac-os-x/169930#169930
-# ^G^B           # branches
-# ^G^E           # each_ref
-# ^G^F           # files
-# ^G^H           # hashes
-# ^G^L           # lreflogs
-# ^G^R           # remotes
-# ^G^S           # stashes
-# ^G^T           # tags
-# ^G^W           # worktrees
-alias fgit='fzf-git.sh --run'
+# NOTE: deprecated in favor of https://atuin.sh/
+# # NOTE: zsh-specific history widget binding
+# fzf-history-widget-accept() {
+#   fzf-history-widget
+#   # zle accept-line  # this auto-runs selected cmd
+#   zle reset-prompt
+# }
+# zle     -N     fzf-history-widget-accept
+# bindkey -r '^R' # unbind: https://unix.stackexchange.com/questions/285208/how-to-remove-a-zsh-keybinding-if-i-dont-know-what-it-does
+# bindkey '^R' fzf-history-widget-accept

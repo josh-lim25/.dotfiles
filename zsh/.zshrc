@@ -26,6 +26,8 @@ fi
 source "${ZINIT_HOME}/zinit.zsh"
 
 # [[ EXPORTS ]] {{
+# Keep PATH entries unique (dedupes existing dups + any added on re-source)
+typeset -U path PATH
 # NOTE: you want to define that directory to the path variable, not the actual binary:
 # EG: `PATH=$MYDIR:$PATH`, where MYDIR is def as the dir containing your binary
 # NOTE: ORDER MATTERS. For `LHS:RHS,` LHS is the prepended head, RHS is the appended tail
@@ -33,19 +35,34 @@ source "${ZINIT_HOME}/zinit.zsh"
 export PATH=$PATH:~/.local/bin
 export PATH=$PATH:~/.local/bin/scripts
 
+# [[ GO ]]
+export PATH="/usr/local/go/bin:$HOME/go/bin:$PATH"
+
+# TODO: this needed anymore?
+export PATH=$HOME/.opencode/bin:$PATH
+
 # [[ NVIM ]]
-export EDITOR="$(which nvim)"
-export VISUAL="$(which nvim)"
-export FCEDIT="$(which nvim)"
+export EDITOR=nvim
+export VISUAL=nvim
+export FCEDIT=nvim
 # export MANPAGER="$(which nvim) +Man!"
 # export NVIM_APPNAME='nvim.bak'
 # export NVIM_APPNAME='nvim-test'
 export NVIM_APPNAME='nvim'
 export PATH="$HOME/.local/share/nvim/mason/bin:$PATH" # NOTE: change if using diff NVIM_APPNAME
 
+# [[ SSH ]]
+# See ~/.config/systemd/user/ssh-agent.service
+export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
 
-# RUSTUP TAB COMPLETIONS
-fpath+=~/.zfunc
+# [[ FNM ]]
+FNM_PATH="/home/josh/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$FNM_PATH:$PATH"
+  # eval "$(fnm env --shell zsh)"
+  # add some other stuff: https://github.com/Schniz/fnm/blob/master/docs/configuration.md
+  eval "$(fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
+fi
 
 # # SCRIPT ORGANIZATION
 # # https://stackoverflow.com/questions/24583863/how-do-i-organize-my-zsh-code-multiple-methods-in-single-file-vs-multiple-files?utm_source=chatgpt.com
@@ -68,11 +85,9 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k # Add Powerlevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # [[ ZSH PLUGINS ]]
-zinit light zsh-users/zsh-syntax-highlighting
+# NOTE: Load order matters. zsh-completions before compinit, fzf-tab + the widget-wrapping plugins AFTER compinit, and
+# zsh-syntax-highlighting LAST.
 zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-autosuggestions
-zinit light Aloxaf/fzf-tab
-zinit light kutsan/zsh-system-clipboard
 
 # [[ SNIPPETS ]]
 # Don't use, but could be worth looking at
@@ -85,22 +100,28 @@ zinit snippet OMZP::git
 # zinit snippet OMZP::kubectx
 # zinit snippet OMZP::command-not-found
 
-autoload -Uz compinit && compinit # Load completions
-zinit cdreplay -q # Replay cached completions (recommended)
+[[ -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh" ]] || mkdir -p "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"     # Avoid cluttering $HOME
+autoload -Uz compinit && compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"                 # Load completions
+zinit cdreplay -q                                                                                    # Replay cached completions (recommended)
+
+zinit light Aloxaf/fzf-tab
+zinit light zsh-users/zsh-autosuggestions
+[[ -n "$WAYLAND_DISPLAY$DISPLAY" ]] && zinit light kutsan/zsh-system-clipboard
+zinit light zsh-users/zsh-syntax-highlighting
 # }}
 
 # [[ HISTORY ]] {{
-HISTSIZE=5000
+HISTSIZE=100000
 HISTFILE=~/.zsh_history
 SAVEHIST=$HISTSIZE
-HISTDUP=erase
-setopt appendhistory
 setopt sharehistory
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
 setopt hist_save_no_dups
-setopt hist_ignore_dups
 setopt hist_find_no_dups
+
+# https://martinheinz.dev/blog/110
+HISTORY_IGNORE="(ls|cd|pwd|exit|cd)*"
 # }}
 
 # [[ STYLING COMPLETIONS ]] {{
@@ -109,11 +130,8 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 # zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
-# }}
-
-# [[ SHELL INTEGRATIONS ]] {{
-eval "$(fzf --zsh)"
-# eval "$(zoxide init --cmd cd zsh)"
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache"
 # }}
 
 # [[ CUSTOM SCRIPTS, FUNCTIONS, AND CONFIGS ]] {{
@@ -123,8 +141,6 @@ source ~/.dotfiles/scripts/.local/bin/scripts/set-vi-mode.sh
 source ~/.dotfiles/scripts/.local/bin/scripts/ssh.sh
 # Fish-like abbrevations/expansions
 source ~/.dotfiles/scripts/.local/bin/scripts/abbrev-alias.sh
-# See ~/.config/systemd/user/ssh-agent.service
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 # [[ FZF CONFIGURATIONS ]]
 # src: https://github.com/junegunn/fzf?tab=readme-ov-file#display-modes
@@ -136,19 +152,15 @@ source ~/.fzf_config
 source ~/.functions.zsh
 # }}
 
-# [[ ABBREVIATIONS ]] {{
-# [[ ESSENTIAL ]]
-abbrev-alias v='nvim'
-abbrev-alias z='zed'
-abbrev-alias getmeout="shutdown -h now"
-abbrev-alias za="zathura"
+# [[ SHELL INTEGRATIONS ]] {{
+eval "$(fzf --zsh)"
+eval "$(zoxide init --cmd cd zsh)"   # replaces cd and exposes cdi for fuzzy finding
+eval "$(atuin init zsh --disable-up-arrow)"
+# }}
 
-# [[ QUICK NAVIGATION ]]
-abbrev-alias cdracket="cd ~/Documents/cis-352/autograder-assignments/"
-abbrev-alias cdsystems="cd ~/Documents/cis-384/"
-abbrev-alias cdtest="cd ~/spaghetti/test/"
-abbrev-alias cdgit="cd ~/Documents/git_testing/"
-abbrev-alias cdrs="cd ~/spaghetti/langs/rust/testing_grounds/"
+# [[ ABBREVIATIONS ]] {{
+abbrev-alias v='nvim'
+abbrev-alias getmeout="shutdown -h now"
 
 # [[ DOCKER ]]
 abbrev-alias dc="docker compose"
@@ -159,27 +171,17 @@ abbrev-alias dcups="docker compose up --remove-orphans --abort-on-container-fail
 abbrev-alias dockps='docker ps --format "{{.ID}} {{.Names}}"'
 docksh() { docker exec -it "$1" /bin/bash; }
 # docker exec -it <id> /bin/bash
-alias ctop='TERM="${TERM/#tmux/screen}" ctop'
-
-# [[ MISE ]]
-# https://mise.jdx.dev/getting-started.html#activate-mise
-# eval "$(~/.local/bin/mise activate zsh)"
-eval "$(/snap/bin/mise activate zsh)"
+# alias ctop='TERM="${TERM/#tmux/screen}" ctop'
 
 # [[ JAVA ]]
 # export JAVA_HOME=/path/to/new/jdk
 # export PATH=$JAVA_HOME/bin:$PATH
 export MAVEN_COLOR=true
 
-# [[ RUST ]]
-abbrev-alias clipme='
-cargo clippy -- \
--W clippy::pedantic \
--W clippy::nursery \
--W clippy::unwrap_used \
-'
-
 # [[ GO ]] {{
+# https://www.reddit.com/r/golang/comments/uzrbw3/best_practice_do_you_use_the_go_compiler_from/
+# TODO: See script in ~/.local/bin/scripts/goupdate. Think this works tho
+alias goupdate='sudo rm -rf /usr/local/go && curl -L "https://go.dev/dl/$(curl -s "https://go.dev/VERSION?m=text" | head -n1).linux-amd64.tar.gz" | sudo tar zx -C /usr/local/ go'
 # check for new available package updates
 abbrev-alias gocheck="go list -u -f '{{if (and (not (or .Main .Indirect)) .Update)}}{{.Path}}: {{.Version}} -> {{.Update.Version}}{{end}}' -m all"
 
@@ -195,6 +197,7 @@ alias godx='stdsym -web | fzf --prompt "Symbols> " --preview "go doc \$(echo {} 
 # [[ TMUX ]]
 abbrev-alias t="tmux"
 abbrev-alias tnew="tmux new -s"
+abbrev-alias smux='ssh -t machine "tmux new -A -s server"'
 # }}
 
 # [[ ALIASES ]] {{
@@ -203,19 +206,17 @@ abbrev-alias tnew="tmux new -s"
 alias -g tg='|& tee out.log | grep '
 
 # [[ SHELL ]]
-alias s='source ~/.zshrc'
-alias dot='cd ~/.dotfiles'
-alias vz='nvim ~/.zshrc'
 alias c='clear'
-alias ls='ls --color=always -F'
-alias l="eza --no-filesize --color=always --no-user --classify"
-alias ll="eza --no-filesize --git --long --color=always --no-user --classify"
-alias lla="eza -a --no-filesize --git --long --color=always --no-user --classify"
-alias lll="eza --long --git --color=always --no-user --classify --tree --level=2"
-alias ..="cd .. && ls"
-alias ...="cd ../.. && ls"
-alias ....="cd ../../.. && ls"
-alias .....="cd ../../../.. && ls"
+alias ls='ls --color=auto -F'
+alias l="eza --no-filesize --color=auto --no-user --classify"
+alias ll="eza --no-filesize --git --long --color=auto --no-user --classify"
+alias lla="eza -a --no-filesize --git --long --color=auto --no-user --classify"
+alias lll="eza --long --git --color=auto --no-user --classify --tree --level=2"
+alias lt="eza --tree --level=3"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
 # alias cat='bat'   # needed to escape too often
 alias bat="bat --color=always --style=numbers,changes,header,grid --italic-text=always"
 alias loc="tokei"
@@ -244,13 +245,19 @@ alias pkg="pacman -Qq | fzf \
 
 
 # [[ "QOL" ]]
+alias s='exec zsh'
+alias vz='nvim ~/.zshrc'
+alias cdw='cd ~/work && ls'
+alias cdp='cd ~/tako-main && ls'
 # `ddcutil --display 1 getvcp 10` to see what brightness is at. 10 is "brightness"
-alias mondown='ddcutil --display 1 setvcp 10 50'
-alias monup='ddcutil --display 1 setvcp 10 100'
+alias monlo='ddcutil --display 1 setvcp 10 1'
+alias monmid='ddcutil --display 1 setvcp 10 50'
+alias monhi='ddcutil --display 1 setvcp 10 100'
 alias dim='wlsunset -s $(date +%H:%M) -t 4000 &'
 alias vdiff='nvim -d'
 alias py='python3'
 # alias tree="tree -C -L 3 -a -I '.git' --charset X " # -C for color
+alias tree="tree -I .git"
 alias minitree="tree -aCL 3 --prune"
 alias dirtree="tree -L 3 -a -d -I '.git' --charset X "
 alias todo='nvim ~/misc/TODO.md'
@@ -262,9 +269,6 @@ alias sc='shellcheck'
 alias btconnect='bluetoothctl connect BC:87:FA:BB:97:66'
 alias souniq='sort | uniq -c'
 alias text='shuf -n25 /usr/share/dict/american-english -o test.txt'
-# https://www.reddit.com/r/golang/comments/uzrbw3/best_practice_do_you_use_the_go_compiler_from/
-# TODO: hardcoded binary. See script in ~/.local/bin/scripts/goupdate
-alias goupdate='sudo rm -rf /usr/local/go && curl -L https://go.dev/dl/go1.18.2.linux-amd64.tar.gz | sudo tar zx -C /usr/local/ go'
 
 # [[ GRC (COLORIZED OUTPUT) ]]
 alias go='grc go'
@@ -288,10 +292,14 @@ jj() {
     javac "$filename" && java "$stripped"
 }
 # }}
-alias u="v ~/.dotfiles/doc/ubuntu.md"
 
-# Server
-alias wl-copy="~/.local/bin/scripts/osc-copy"
+# [[ SERVER ]] {{
+# alias wl-copy="~/.local/bin/scripts/osc-copy"
 
-# opencode
-export PATH=/home/josh/.opencode/bin:$PATH
+# im so lazy
+abbrev-alias prnotes="nvim $HOME/work/project/PR_REVIEW/NOTES.md"
+abbrev-alias mp="multipass"
+abbrev-alias ws="workshop"
+abbrev-alias oc="opencode"
+export TAKO=~/tako
+# }}

@@ -39,6 +39,7 @@ keymap({ "n", "v", "x", "o" }, "H", "^", opts)
 keymap({ "n", "v", "x", "o" }, "L", "$", opts)
 keymap({ "n", "v", "x", "o" }, "gH", "g^", opts)
 keymap({ "n", "v", "x", "o" }, "gL", "g$", opts)
+keymap({ "n", "v", "x", "o" }, "<C-e>", "$%", opts)
 
 -- move selected lines vertically
 keymap("v", "J", ":m '>+1<CR>gv=gv", opts)

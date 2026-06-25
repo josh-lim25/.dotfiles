@@ -5,6 +5,10 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     opts = {
+      attach_to_untracked = true,       -- untracked files get signs and show up in setqflist("all")
+      diff_opts = { linematch = 60 },   -- align changed lines within a hunk
+      linehl = false,
+      numhl = false,
       signs = {
         add = { text = "+" },
         change = { text = "~" },
@@ -14,12 +18,12 @@ return {
         untracked = { text = "?" },
       },
       signs_staged = {
-        add = { text = "++" },
-        change = { text = "~~" },
-        delete = { text = "xx" },
-        topdelete = { text = "xx" },
-        changedelete = { text = "**" },
-        untracked = { text = "??" },
+        add          = { text = '┃' },
+        change       = { text = '┃' },
+        delete       = { text = '_' },
+        topdelete    = { text = '‾' },
+        changedelete = { text = '~' },
+        untracked    = { text = '┆' },
       },
       signs_staged_enable = true,
       watch_gitdir = {
@@ -52,7 +56,7 @@ return {
           if vim.wo.diff then
             vim.cmd.normal({']g', bang = true})
           else
-            gitsigns.nav_hunk('next')
+            gitsigns.nav_hunk('next', { target = "all" })   -- keeps staged hunks jumpable
           end
         end)
 
@@ -60,11 +64,11 @@ return {
           if vim.wo.diff then
             vim.cmd.normal({'[g', bang = true})
           else
-            gitsigns.nav_hunk('prev')
+            gitsigns.nav_hunk('prev', { target = "all" })
           end
         end)
 
-        -- Staging and Resetting Hunks
+        -- Hunks
         map("n", "<leader>gs", gitsigns.stage_hunk, { desc = "[g]it [s]tage hunk" })
         map("n", "<leader>gr", gitsigns.reset_hunk, { desc = "[g]it [r]eset hunk" })
         map('v', '<leader>gs', function()
@@ -73,19 +77,26 @@ return {
         map('v', '<leader>gr', function()
           gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') })
         end)
-        map("n", "<leader>gS", gitsigns.stage_buffer, { desc = "[g]it [S]tage buffer" })
-        map("n", "<leader>gR", gitsigns.reset_buffer, { desc = "[g]it [R]eset buffer" })
+        map("n", "<leader>gS", gitsigns.stage_buffer, { desc = "[g]it [S]tage" })
+        map("n", "<leader>gR", gitsigns.reset_buffer, { desc = "[g]it [R]eset" })
+        map("n", "<leader>gh", function() gitsigns.change_base("HEAD~1", true) end, { desc = "git diff against HEAD~1, older base" })
+        map("n", "<leader>gH", function() gitsigns.reset_base(true) end, { desc = "git reset base index" })
+        map({ "o", "x" }, "ih", "<Cmd>Gitsigns select_hunk<CR>", { desc = "gitsigns: select hunk" })
 
         -- Diffs
-        -- map('n', '<leader>gd', gitsigns.preview_hunk, { desc = '[g]it preview hunk [d]iff' })
-        map("n", "<leader>gdd", gitsigns.preview_hunk_inline, { desc = "[g]it preview hunk [d]iff inline" })
-        map("n", "<leader>gdo", gitsigns.diffthis, { desc = "[g]it [d]iff against index in an [o]pened split view" })
-        map("n", "<leader>td", gitsigns.toggle_deleted, { desc = "[T]oggle git show [D]eleted" })
-        map('n', '<leader>gdw', gitsigns.toggle_word_diff)
+        -- map('n', '<leader>gd', gitsigns.preview_hunk, { desc = '[g]it preview hunk [d]iff' })  -- in a popup, blocks code
+        map("n", "<leader>gdi", gitsigns.preview_hunk_inline, { desc = "[g]it preview hunk [d]iff [i]nline" })
+        map("n", "<leader>gds", gitsigns.diffthis, { desc = "[g]it [d]iff against index in an [s]plit view" })
+        map('n', '<leader>tw', gitsigns.toggle_word_diff)
 
         -- Blame
         map("n", "<leader>gb", gitsigns.blame_line, { desc = "[g]it [b]lame line" })
+        map("n", "<leader>gB", gitsigns.blame, { desc = "[g]it [b]lame line" })
         map("n", "<leader>tb", gitsigns.toggle_current_line_blame, { desc = "[T]oggle git show [b]lame line" })
+
+        -- Quickfix list
+        map("n", "<leader>gq", function() gitsigns.setqflist(0) end,     { desc = "[g]it hunks to [q]uickfix (this buffer)" })
+        map("n", "<leader>gQ", function() gitsigns.setqflist("all") end, { desc = "[g]it hunks to [Q]uickfix (whole tree)" })
       end,
     },
   },

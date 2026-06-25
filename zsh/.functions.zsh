@@ -52,18 +52,28 @@ bindkey '^v' fzf_references
 f() {
   command -v fzf >/dev/null 2>&1 || { echo "Install fzf first!"; return 1; }
   command -v bat >/dev/null 2>&1 || { echo "Install bat first!"; return 1; }
+  local file=$(fzf)
+  [[ -n $file ]] && nvim "$file"
+
 
   # The parenthesis () ensure the directory change doesn't leak out
-  (
-    cd "$HOME" || return 1
-    local file=$(fzf --preview "bat --style=numbers --color=always {}")
-    [[ -n $file ]] && nvim "$file"
-  )
+  # Uncomment below this line if you want to search from $HOME, always:
+  # (
+  #   cd "$HOME" || return 1
+  #   local file=$(fzf --preview "bat --style=numbers --color=always {}")
+  #   [[ -n $file ]] && nvim "$file"
+  # )
 }
 
 # [[ CREATE DIR AND CD INTO IT ]]
 mkcd() {
     mkdir -p "$1" && cd "$1"
+}
+
+# [[ PRINT DIR INFO AFTER CD ]]
+# NOTE: zsh looks for a function named chpwd and runs it as a hook whenever the directory changes.
+chpwd() {
+    eza --no-filesize --color=auto --no-user --classify
 }
 
 # [[ EXTRACT DIFF ARCHIVE FORMATS ]]
@@ -88,7 +98,6 @@ extract() {
         echo "'$1' is not a valid file"
     fi
 }
-
 # }}
 
 # [[ GIT ]] {{
@@ -103,6 +112,7 @@ cdg() {
 }
 
 # https://github.com/MSmaili/dotfiles/blob/370bac98a72d1a4ff8d2cfbea789ef4472f348a7/.config/zsh/functions.zsh
+# TODO: better soln
 # [[ VIEW THE DIFF OF A FILE ]]
 gdiff() {
     local args="$*"

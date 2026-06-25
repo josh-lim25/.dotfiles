@@ -25,6 +25,7 @@
 - Inversions
 - Intervals (arpeggios, octaves)
 - Hanon
+> Look up audiation ear training practice for piano
 
 # Sightreading
 - Notice that the keyboard is grouped like so: 3 white keys with 2 black keys in between, then 4 white keys with 3 black in between. The leftmost key of the first group is C; and for the second group, F. Use those as reference points.
@@ -89,3 +90,15 @@ C D Eb F G Ab Bb
 C D D# F G G# A#
 
 and it would contain the same notes, but it would be a bit weird: it has two D's, two G's, and no E or B. This is a problem not only because the first version looks prettier, but because it obscures the relationship between the two scales. By using flats, we can see that the minor scale takes the major scale and lowers the 3rd, 6th and 7th by a semitone. In some other scales, we would use sharps instead of flats, for the same reason. Don't get overwhelmed by this right now, though: I'm just showing that there's a reason for choosing sharps or flats in each situation, I don't expect you to understand or remember everything.
+
+
+---
+
+# Hanon Reminders
+- [src](https://www.youtube.com/watch?v=Iw5Kq8e6_mQ)
+1. Enables you to learn good technique, that lets you play relaxed
+2. Play hands separately (left, right brain).
+3. If your pinky lifts, it's because it's tense. Try playing H1 with pinky pressed into the key on each group. Similarly, the thumb should always be touching the keyboard.
+    - One thing to try is to "relax and let hand fall, then play the next group."
+4. Thinking fast to tell fingers what to play is important. Play fast as fast as possible.
+- For fast playing, take scales. For scales you want evenness, but when you play fast the crossing over is hard—soln is to play the third/first finger (going up/down) staccato, and at high speeds this is imperceptible.

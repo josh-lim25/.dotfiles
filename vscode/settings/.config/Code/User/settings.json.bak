@@ -20,5 +20,30 @@
   "extensions.autoUpdate": "off",
   "editor.formatOnSave": true,
   "editor.inlayHints.enabled": "on",
+  // Go
+  // "[go]": {
+  //   "editor.defaultFormatter": "golang.go",
+  //   "editor.formatOnSave": true,
+  //   "editor.codeActionsOnSave": {
+  //     "source.organizeImports": "explicit"
+  //   }
+  // },
+  // "go.useLanguageServer": true,
+  // // Use the gopls/tools installed on system; don't let the extension manage them.
+  // "go.toolsManagement.checkForUpdates": "off",
+  // // From `go env`:
+  // "go.goroot": "/home/josh/go",
+  // "go.gopath": "/home/josh/go-workspace",
+  // "gopls": {
+  //   "ui.semanticTokens": true,
+  //   "formatting.gofumpt": false
+  // },
   "workbench.colorTheme": "Kanagawa Paper Ink (custom)",
+  // "workbench.colorTheme": "Kanagawa Paper Ink",
+  // "workbench.colorCustomizations": {
+  // "[Kanagawa Paper Ink]": {
+  //   "editor.findMatchBackground": "#43436c",
+  //   "editor.findMatchHighlightBackground": "#43436c66"
+  // }
+  // },
 }

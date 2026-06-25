@@ -1,0 +1,2 @@
+- [relevant xkcd](https://xkcd.com/1205/)
+- A configuration for **my personal use** first and foremost. This means things are subject to change (and they will). Feel free to judge for any decisions made here. Unfortunately I do not care :(

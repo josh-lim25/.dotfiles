@@ -8,6 +8,7 @@ require("settings.options")
 require("settings.keymaps")
 require("settings.diagnostics")
 require("plugins.bootstrap")
+require("wip.review")
 
 -- [[ SNIPPETS ]]
 require('luasnip.loaders.from_lua').lazy_load { paths = { vim.fn.stdpath 'config' .. '/lua/snippets' } }

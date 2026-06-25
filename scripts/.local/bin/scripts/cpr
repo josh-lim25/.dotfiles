@@ -1,0 +1,173 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# cat-pr -> cpr
+
+# View one pull request's full metadata in the terminal, formatted and colored:
+# a status header (draft / review decision / conflicts / labels / URL),
+# description, conversation, review summaries, and inline code-chunk comments
+# (each with its colored diff hunk). The repo is taken from owner/repo, a local
+# checkout directory, or (if neither is given) auto-detected from the current dir.
+#
+# Usage:   cpr [owner/repo | path/to/repo] <pr-number>
+# Example: cpr 44
+#          cpr owner/repo 44
+#          cpr ~/test/repo 44
+#
+# Color is on when writing to a terminal, off when redirected/piped or when
+# NO_COLOR is set. Output is paged through less when available. Each section
+# caps at the first 100 comments/reviews/threads, which is plenty for viewing.
+
+usage() { echo "Usage: $(basename "$0") [owner/repo | path/to/repo] <pr-number>" >&2; }
+
+case "${1:-}" in
+  -h|--help) usage; exit 0 ;;
+esac
+
+command -v gh >/dev/null || { echo "Error: gh not installed." >&2; exit 1; }
+command -v jq >/dev/null || { echo "Error: jq not installed." >&2; exit 1; }
+
+# The PR number is always the last argument. An optional repo — "owner/repo"
+# or a path to a local checkout — may come before it.
+if [[ $# -eq 1 ]]; then
+  TARGET=""; PR="$1"
+elif [[ $# -eq 2 ]]; then
+  TARGET="$1"; PR="$2"
+else
+  usage; exit 1
+fi
+[[ "$PR" =~ ^[0-9]+$ ]] || { echo "Error: the PR number must be the last argument." >&2; usage; exit 1; }
+
+if [[ -n "$TARGET" && -d "$TARGET" ]]; then
+  # A directory on disk: resolve the repo from that checkout's git remote.
+  read -r OWNER NAME < <(cd "$TARGET" && gh repo view --json owner,name -q '.owner.login + " " + .name') \
+    || { echo "Error: '$TARGET' is not a GitHub repo checkout (no resolvable remote)." >&2; exit 1; }
+elif [[ -n "$TARGET" ]]; then
+  # "owner/repo".
+  OWNER="${TARGET%%/*}"
+  NAME="${TARGET##*/}"
+else
+  # Auto-detect from the current directory.
+  read -r OWNER NAME < <(gh repo view --json owner,name -q '.owner.login + " " + .name') \
+    || { echo "Error: could not resolve repo (pass owner/repo or a repo directory, or run inside a repo)." >&2; exit 1; }
+fi
+[[ -n "${OWNER:-}" && -n "${NAME:-}" ]] || { echo "Error: could not resolve owner/repo." >&2; exit 1; }
+
+# Color on only for an interactive terminal; respect NO_COLOR.
+use_color=false
+[[ -t 1 && -z "${NO_COLOR:-}" ]] && use_color=true
+
+# Terminal width for the section rules, clamped to a readable range.
+WIDTH=$(tput cols 2>/dev/null || echo 80)
+[[ "$WIDTH" =~ ^[0-9]+$ ]] || WIDTH=80
+if (( WIDTH > 100 )); then WIDTH=100; fi
+if (( WIDTH < 40 )); then WIDTH=40; fi
+
+QUERY='
+query($o: String!, $r: String!, $n: Int!) {
+  repository(owner: $o, name: $r) {
+    pullRequest(number: $n) {
+      number title state body author { login }
+      createdAt mergedAt baseRefName headRefName
+      additions deletions changedFiles
+      isDraft reviewDecision mergeable url
+      labels(first: 20) { nodes { name } }
+      comments(first: 100) { nodes { author { login } createdAt body } }
+      reviews(first: 100) { nodes { author { login } state submittedAt body } }
+      reviewThreads(first: 100) { nodes {
+        path line originalLine isResolved
+        comments(first: 100) { nodes { author { login } createdAt diffHunk body } }
+      } }
+    }
+  }
+}'
+
+response=$(gh api graphql -F n="$PR" -f o="$OWNER" -f r="$NAME" -f query="$QUERY") \
+  || { echo "Error: gh api request failed." >&2; exit 1; }
+
+if echo "$response" | jq -e '.errors' >/dev/null 2>&1; then
+  echo "GraphQL error:" >&2
+  echo "$response" | jq -c '.errors' >&2
+  exit 1
+fi
+if [[ "$(echo "$response" | jq '.data.repository.pullRequest == null')" == "true" ]]; then
+  echo "Error: PR #$PR not found in $OWNER/$NAME (is it an issue number?)." >&2
+  exit 1
+fi
+
+# jq program. $color and $width are passed via --argjson. All coloring is gated
+# on $color, so the same program yields clean plain text when color is off.
+# Palette: bold = structure, cyan = people, dim = timestamps/quiet/resolved,
+# green/red/yellow = status, green/red/cyan = diff add/remove/hunk-header.
+JQ='
+def paint(code): if $color then "\u001b[" + code + "m" + . + "\u001b[0m" else . end;
+def rule($n): if $n <= 0 then "" else ([range(0; $n)] | map("─") | add) end;
+def header($label): ("── " + $label + " " + rule($width - ($label | length) - 4)) | paint("1");
+def ts: (. // "") | .[0:16] | gsub("T"; " ");
+def state_color:
+    if   . == "APPROVED"          then paint("32")
+    elif . == "CHANGES_REQUESTED" then paint("31")
+    else paint("33") end;
+def color_hunk: split("\n") | map(
+    (if $color then "\u001b[2m  │ \u001b[0m" else "  │ " end)
+    + (if   startswith("@@") then paint("36")
+       elif startswith("+")  then paint("32")
+       elif startswith("-")  then paint("31")
+       else . end)
+  ) | join("\n");
+
+.data.repository.pullRequest | (
+  (("#\(.number)  " + .title | paint("1")) + "  ·  " + (.state | state_color)),
+  (("\(.author.login // "?")  ·  opened \(.createdAt | ts)"
+    + (if .mergedAt then "  ·  merged \(.mergedAt | ts)" else "" end)) | paint("2")),
+  ("\(.baseRefName) ← \(.headRefName)  ·  +\(.additions) -\(.deletions)  ·  \(.changedFiles) files" | paint("2")),
+  (([ (if .isDraft then ("DRAFT" | paint("1;33")) else empty end),
+      (if .reviewDecision then ("review: " + (.reviewDecision | state_color)) else empty end),
+      (if .mergeable == "CONFLICTING" then ("conflicts" | paint("31")) else empty end)
+    ] | join("  ·  ")) | if . == "" then empty else . end),
+  (if (.labels.nodes | length) > 0
+     then (("labels: " + (.labels.nodes | map(.name) | join(" · "))) | paint("2"))
+     else empty end),
+  (.url | paint("2")),
+
+  "",
+  header("DESCRIPTION"),
+  (if (.body // "") == "" then ("(none)" | paint("2")) else .body end),
+
+  "",
+  header("CONVERSATION · \(.comments.nodes | length)"),
+  (if (.comments.nodes | length) == 0 then ("(none)" | paint("2")) else empty end),
+  (.comments.nodes[] |
+     ((.author.login // "?" | paint("36")) + "  " + (.createdAt | ts | paint("2"))),
+     ("  " + (.body | gsub("\n"; "\n  "))),
+     ""),
+
+  "",
+  header("REVIEWS · \(.reviews.nodes | length)"),
+  (if (.reviews.nodes | length) == 0 then ("(none)" | paint("2")) else empty end),
+  (.reviews.nodes[] |
+     ((.author.login // "?" | paint("36")) + "  ·  " + (.state | state_color)
+       + "  " + (.submittedAt | ts | paint("2"))),
+     ("  " + (if (.body // "") == "" then ("(no summary)" | paint("2")) else (.body | gsub("\n"; "\n  ")) end)),
+     ""),
+
+  "",
+  header("INLINE CODE COMMENTS · \(.reviewThreads.nodes | length)"),
+  (if (.reviewThreads.nodes | length) == 0 then ("(none)" | paint("2")) else empty end),
+  (.reviewThreads.nodes[] |
+     (("\(.path):\(.line // .originalLine // "?")" | paint("1"))
+       + "  ·  " + (if .isResolved then ("resolved" | paint("2")) else ("open" | paint("1;33")) end)),
+     ((.comments.nodes[0].diffHunk // "") | color_hunk),
+     (.comments.nodes[] |
+        ("  " + (.author.login // "?" | paint("36")) + "  " + (.createdAt | ts | paint("2"))),
+        ("    " + (.body | gsub("\n"; "\n    ")))),
+     "")
+)'
+
+out=$(echo "$response" | jq -r --argjson color "$use_color" --argjson width "$WIDTH" "$JQ")
+
+if [[ -t 1 ]] && command -v less >/dev/null; then
+  printf '%s\n' "$out" | less -FRX || true
+else
+  printf '%s\n' "$out"
+fi

@@ -1,0 +1,1 @@
+- create some more of the chord keybinds, basically two separated by space. E.g., `Ctrl+k Ctrl+o` to do "File: open folder"

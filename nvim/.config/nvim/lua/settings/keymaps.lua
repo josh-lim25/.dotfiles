@@ -254,10 +254,33 @@ end
 -- }}
 
 -- [[ TESTS ]] {{
-keymap("n", "<leader>r", function()
-  vim.cmd("write")
-  local filename = vim.fn.expand("%:t")
-  os.execute('tmux send-keys -t 1 "go run ./' .. filename .. '" C-m')
-end)
+local function goto_test()
+  local name = vim.fn.expand("<cword>")
+  local src  = vim.fn.expand("%:p")
+  local test = src:gsub("%.go$", "_test.go")
+  if test == src then
+    vim.notify("not a .go file", vim.log.levels.WARN); return
+  end
+  if vim.fn.filereadable(test) == 0 then
+    vim.notify("no test file next to this one", vim.log.levels.WARN); return
+  end
+
+  vim.cmd("edit " .. vim.fn.fnameescape(test))
+  vim.fn.cursor(1, 1)
+  -- \c = case-insensitive, so source `foobar` matches `FooBar` in `TestFooBarGeneration`.
+  -- func + Test skips `type foobarGenerationTest` and `var foobarGenerationTests`
+  -- (they hold the literal lowercase word, which is what caught the old fallback).
+  if vim.fn.search([[\c\<func\>.*Test\zs]] .. name, "cW") == 0 then
+    vim.notify("no test func matching '" .. name .. "'", vim.log.levels.WARN)
+  end
+end
+
+vim.keymap.set("n", "gt", goto_test, { desc = "goto test for word under cursor" })
 -- }}
+
+-- kill the gr* family so `gr` fires with no timeout
+for _, k in ipairs({ "grn", "gra", "grr", "gri", "grt", "grx" }) do
+  pcall(vim.keymap.del, "n", k)
+end
+pcall(vim.keymap.del, "x", "gra")
 -- vim: ts=2 sts=2 sw=2 et

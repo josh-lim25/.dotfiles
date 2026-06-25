@@ -25,11 +25,14 @@ sudo apt update
 
 ## Colorscheme
 ```sh
-# run from ~/.dotfiles/vscode
-mkdir -p ~/.vscode/extensions/kanagawa-paper-ink
-ln -sf "$PWD/kanagawa-paper-ink-color-theme.json" ~/.vscode/extensions/kanagawa-paper-ink/theme.json
-printf '%s' '{"name":"kanagawa-paper-ink","publisher":"local","version":"1.0.0","engines":{"vscode":"*"},"contributes":{"themes":[{"label":"Kanagawa Paper Ink (custom)","uiTheme":"vs-dark","path":"./theme.json"}]}}' > ~/.vscode/extensions/kanagawa-paper-ink/package.json
-```
+# run one time from ~/.dotfiles/vscode
+mkdir -p kanagawa-paper-ink
+mv kanagawa-paper-ink-color-theme.json kanagawa-paper-ink/theme.json
+cat > kanagawa-paper-ink/package.json <<'EOF'
+{"name":"kanagawa-paper-ink","publisher":"local","version":"1.0.0","engines":{"vscode":"*"},"contributes":{"themes":[{"label":"Kanagawa Paper Ink (custom)","uiTheme":"vs-dark","path":"./theme.json"}]}}
+EOF
+rm -rf ~/.vscode/extensions/kanagawa-paper-ink
+ln -sfn "$PWD/kanagawa-paper-ink" ~/.vscode/extensions/kanagawa-paper-ink```
 
 ```json
 // Add to `settings/.config/Code/User/settings.json`

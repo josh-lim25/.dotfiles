@@ -5,7 +5,7 @@ local keymap = vim.keymap.set
 -- [d and ]d for jumpting to prev and next diagnostic is default, but doesn't show details
 keymap('n', ']d', function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = 'Go to next [D]iagnostic message' })
 keymap('n', '[d', function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = 'Go to previous [D]iagnostic message' })
-keymap('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+keymap('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open [d]iagnostic [q]uickfix list' })
 
 -- [[ TOGGLE DIAGNOSTICS ]]
 local diagnostics_enabled = true

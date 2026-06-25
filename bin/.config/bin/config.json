@@ -1,0 +1,60 @@
+{
+    "default_path": "/home/josh/.local/bin",
+    "bins": {
+        "/home/josh/.local/bin/atuin": {
+            "path": "/home/josh/.local/bin/atuin",
+            "remote_name": "atuin",
+            "version": "v18.18.1",
+            "hash": "35fd4f70a75d6187e8853777014df64dcf8b74ec535bcf74ab54e63e29d2db4e",
+            "url": "github.com/atuinsh/atuin",
+            "provider": "github",
+            "package_path": "atuin-x86_64-unknown-linux-gnu/atuin",
+            "selected_asset": "atuin-x86_64-unknown-linux-gnu.tar.gz",
+            "pinned": false
+        },
+        "/home/josh/.local/bin/bin": {
+            "path": "/home/josh/.local/bin/bin",
+            "remote_name": "bin_0.29.0_linux_amd64",
+            "version": "v0.29.0",
+            "hash": "f7f88883e1e572e72b0839631baeb159a5de71264f7088f706daf888b54e8c28",
+            "url": "github.com/marcosnils/bin",
+            "provider": "github",
+            "package_path": "",
+            "selected_asset": "bin_0.29.0_linux_amd64",
+            "pinned": false
+        },
+        "/home/josh/.local/bin/revdiff": {
+            "path": "/home/josh/.local/bin/revdiff",
+            "remote_name": "revdiff",
+            "version": "v1.11.1",
+            "hash": "0058b21477f82aeee7710bbaac8ceac5e46a309a4f954a23a46566d014107745",
+            "url": "github.com/umputun/revdiff",
+            "provider": "github",
+            "package_path": "revdiff",
+            "selected_asset": "revdiff_1.11.1_linux_amd64.tar.gz",
+            "pinned": false
+        },
+        "/home/josh/.local/bin/sops": {
+            "path": "/home/josh/.local/bin/sops",
+            "remote_name": "sops-v3.13.3.linux.amd64",
+            "version": "v3.13.3",
+            "hash": "e5bec3346a873ae91d871550f3e698c1aad962aff462a080e40f25fde17fef6b",
+            "url": "github.com/getsops/sops",
+            "provider": "github",
+            "package_path": "",
+            "selected_asset": "sops-v3.13.3.linux.amd64",
+            "pinned": false
+        },
+        "/home/josh/.local/bin/zoxide": {
+            "path": "/home/josh/.local/bin/zoxide",
+            "remote_name": "zoxide",
+            "version": "v0.10.0",
+            "hash": "0959b169db9adac07187ab99b0d9806f616fbe7938cf84f9f4e2422d8de16e6c",
+            "url": "github.com/ajeetdsouza/zoxide",
+            "provider": "github",
+            "package_path": "zoxide",
+            "selected_asset": "zoxide-0.10.0-x86_64-unknown-linux-musl.tar.gz",
+            "pinned": false
+        }
+    }
+}
