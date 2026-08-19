@@ -1,6 +1,6 @@
 - From [this comment](https://www.reddit.com/r/unixporn/comments/18yqmgk/tmux_always_feared_tmux_finally_managed_to/)
 ```
- display-popup is your friend. bind everything to it in tmux, scratch terms, fzf, clipboard, term/pane selection
+display-popup is your friend. bind everything to it in tmux, scratch terms, fzf, clipboard, term/pane selection
 
 alt+, (common settings shorty in gui apps) opens my dotfiles in fzf
 
@@ -18,5 +18,5 @@ tmux -L default new -A -s secondsesh -t globalsesh
 
 If you open a new window/tab/quake and define a diff session name, they will NOT share the same view. They will share the same windows/tabs/panes, but wil operate independently from each other's active view.
 
-I define a socket/server name because of "not all eggs in one basket". (my tmux can segfault occasionaly by having a ton of shit trying to work on same server). I also have my quake/statusbar using its own socket/server. 
+I define a socket/server name because of "not all eggs in one basket". (my tmux can segfault occasionaly by having a ton of shit trying to work on same server). I also have my quake/statusbar using its own socket/server.
 ```

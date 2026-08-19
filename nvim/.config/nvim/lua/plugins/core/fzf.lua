@@ -76,7 +76,13 @@ return {
 
     -- [[ GIT ]]
     keymap("n", "<leader>gg", fzf.git_status, { desc = "Its over" })
-
+    keymap("n", "<leader>gfc", fzf.git_commits, { desc = "[G]it [f]zf repo [c]ommits" })
+    keymap("n", "<leader>gfC", fzf.git_bcommits, { desc = "[G]it [f]zf buffer [C]ommits" })
+    keymap("n", "<leader>gfb", fzf.git_branches, { desc = "[G]it [f]zf [b]ranches" })
+    keymap("n", "<leader>gfz", fzf.git_stash, { desc = "[G]it [f]zf stashe[z]" })
+    keymap("n", "<leader>gfh", function()
+      fzf.git_hunks({ ref = "HEAD~1" })
+    end, { desc = "[G]it [f]zf [h]unks vs HEAD~1" })
     -- [[ DOCS ]]
     local function browse_docs()
       local ft = vim.bo.filetype

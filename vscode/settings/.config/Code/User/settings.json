@@ -1,24 +1,12 @@
 {
-  "extensions.experimental.affinity": {
-    "asvetliakov.vscode-neovim": 1
-  },
-  "editor.semanticHighlighting.enabled": true,
-  "vscode-neovim.neovimExecutablePaths.linux": "/snap/bin/nvim",
-  "vscode-neovim.neovimInitVimPaths.linux": "/home/josh/.config/nvim-vscode/init.lua",
-  "keyboard.dispatch": "keyCode",
-  "editor.lineNumbers": "relative",
-  "editor.cursorSurroundingLines": 999,
-  "editor.cursorSurroundingLinesStyle": "all",
-  "editor.minimap.enabled": false,
-  "editor.cursorBlinking": "solid",
-  "editor.cursorSmoothCaretAnimation": "off",
-  "editor.experimental.asyncTokenization": true,
-  "workbench.editor.enablePreview": false,
-  "workbench.startupEditor": "none",
-  "telemetry.telemetryLevel": "off",
-  "update.mode": "manual",
-  "extensions.autoUpdate": "off",
-  "editor.formatOnSave": true,
-  "editor.inlayHints.enabled": "on",
-  "workbench.colorTheme": "Kanagawa Paper Ink (custom)",
+    "workbench.colorTheme": "Gruvbox Material Dark",
+    "vim.insertModeKeyBindings": [
+        {
+            "before": ["j", "k"],
+            "after": ["<Esc>"]
+        }
+    ],
+    "update.mode": "none",
+    "editor.cursorBlinking": "solid",
+    "extensions.autoUpdate": "off"
 }

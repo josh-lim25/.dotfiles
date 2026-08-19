@@ -1,7 +1,22 @@
 # Time-sensitive, high-prio TODOs
-- [ ] CLAIM BENEFITS - YOU HAVE ONE WEEK: [isolved link](https://mp-hr.myisolved.com/)
-- [ ] [expensify card](https://help.expensify.com/articles/expensify-classic/expensify-card/Cardholder-Settings-and-Features)
-    - [link to my virtual card](https://www.expensify.com/settings?param={%22section%22:%22creditcards%22}#param={%22section%22:%22creditcards%22})
+- [link to my virtual card](https://www.expensify.com/settings?param={%22section%22:%22creditcards%22}#param={%22section%22:%22creditcards%22})
+
+- [x] [holy shit?](https://github.com/marcosnils/bin)
+- setup [SOPS](https://getsops.io/docs/usage/first-steps/), then difftastic, revdiff
+
+## Diffs and PRs
+- [ ] [seems great for addressing pr feedback](https://github.com/tummychow/git-absorb)
+- Pick a winner
+    - [ ] testing the review thing you made nvim more
+    - [ ] revdiff, use it more
+
+
+## TODO Today
+- [ ] migrate to ghostty IFF it fixes clipboard shit
+    - look also at [blogpost on terminal input](https://roman.pt/posts/terminal-setup/) and [terminal input warp article](https://www.warp.dev/blog/why-is-the-terminal-input-so-weird) for more insight into the problem
+- [ ] more pi setup
+- [tmux fix underutilization](https://www.youtube.com/watch?v=RmSvKKmLjGU)
+[stacked prs](https://docs.github.com/en/pull-requests/get-started/about-stacked-prs)
 
 - [ ] corp laptop
 - [ ] [yubikey how to buy](https://library.canonical.com/it/purchasing-yubikeys) and a [link](https://www.yubico.com/us/product/yubikey-bio-series/yubikey-c-bio/)

@@ -29,18 +29,18 @@
 # timezone = "local"
 
 ## enable or disable automatic sync
-# auto_sync = true
+auto_sync = true
 
 ## enable or disable automatic update checks
 # update_check = true
 
 ## address of the sync server
-# sync_address = "https://api.atuin.sh"
+sync_address = "https://api.atuin.sh"
 
 ## how often to sync history. note that this is only triggered when a command
 ## is ran, so sync intervals may well be longer
 ## set it to 0 to sync after every command
-# sync_frequency = "5m"
+sync_frequency = "25m"
 
 ## which search mode to use for interactive search
 ## possible values: prefix, fulltext, fuzzy, skim
@@ -174,6 +174,7 @@ history_filter = [
 ## If set to false, both enter and tab will place the command in the prompt for editing.
 ## This applies for new installs. Old installs will keep the old behaviour unless configured otherwise.
 enter_accept = false
+search_mode = "daemon-fuzzy"
 
 ## Defaults to false. If enabled, when triggered after &&, || or |, Atuin will complete commands to chain rather than replace the current line.
 # command_chaining = false
@@ -183,7 +184,7 @@ enter_accept = false
 ## selected based on the shell's keymap where the keybinding is defined. If
 ## this is set to "emacs", "vim-insert", or "vim-normal", the startup keymap
 ## mode in the Atuin search is forced to be the specified one.
-# keymap_mode = "emacs"
+keymap_mode = "emacs"
 
 ## Cursor style in each keymap mode. If specified, the cursor style is changed
 ## in entering the cursor shape. Available values are "default" and
@@ -271,6 +272,8 @@ enter_accept = false
 # strategy = "auto"
 
 [daemon]
+enabled = true
+autostart = true
 ## Enables using the daemon to sync.
 # enabled = false
 
@@ -345,7 +348,7 @@ enter_accept = false
 # columns = ["duration", "time", "command"]
 ##
 ## Show host for multi-machine sync users:
-# columns = ["duration", "time", "host", "command"]
+columns = ["duration", "time", "host", "command"]
 
 ## Syntax highlight commands in the search results, using the theme's colors.
 ## Not available on all platforms (e.g. Windows).

@@ -82,3 +82,11 @@ maybe prefix V and H for copying cwd first
 ### FZF
 - `<leader>fd`: find diagnostics
 ---
+
+
+
+
+### PI
+app.thinking.toggle 	ctrl+t 	Collapse or expand thinking blocks
+app.editor.external     ctrl+g  Open in external editor (externalEditor, $VISUAL, $EDITOR, Notepad on Windows, or nano elsewhere)
+

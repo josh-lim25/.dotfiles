@@ -33,6 +33,9 @@
 	# NOTE: why I migrated from .zshrc aliases - https://www.reddit.com/r/git/comments/1duhi1u/better_git_shell_aliases/
 	# > If you're creating external commands, you don't even need aliases. If `git foo` isn't recognized by git, it will look for `git-foo` in your $PATH and run it. In fact some of the "core" git tools are written like this, see ls -l /usr/lib/git-core for which ones aren't symlinks to /usr/bin/git, many of them are shell or perl scripts.
 
+    # create an empty commit
+    noop = !git commit --allow-empty -m "noop"
+
 	# Basics
 	s = status
 	a = add

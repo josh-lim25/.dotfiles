@@ -1,22 +1,3 @@
+// Place your key bindings in this file to override the defaults
 [
-  { "key": "ctrl+h", "command": "workbench.action.navigateLeft", "when": "!editorTextFocus || neovim.mode != insert" },
-  { "key": "ctrl+l", "command": "workbench.action.navigateRight", "when": "!editorTextFocus || neovim.mode != insert" },
-  { "key": "ctrl+j", "command": "workbench.action.navigateDown", "when": "!editorTextFocus || neovim.mode != insert" },
-  { "key": "ctrl+k", "command": "workbench.action.navigateUp", "when": "!editorTextFocus || neovim.mode != insert" },
-
-  { "key": "ctrl+space v", "command": "workbench.action.splitEditorRight" },
-  { "key": "ctrl+space h", "command": "workbench.action.splitEditorDown" },
-  { "key": "ctrl+space v", "command": "workbench.action.terminal.split", "when": "terminalFocus" },
-  { "key": "ctrl+space c", "command": "workbench.action.terminal.toggleTerminal" },
-  { "key": "ctrl+[", "command": "workbench.action.toggleSidebarVisibility" },
-  { "key": "ctrl+]", "command": "workbench.action.toggleAuxiliaryBar" },
-
-  { "key": "ctrl+up", "command": "workbench.action.decreaseViewHeight" },
-  { "key": "ctrl+down", "command": "workbench.action.increaseViewHeight" },
-  { "key": "ctrl+left", "command": "workbench.action.decreaseViewWidth" },
-  { "key": "ctrl+right", "command": "workbench.action.increaseViewWidth" },
-  { "key": "ctrl+up", "command": "workbench.action.terminal.resizePaneUp", "when": "terminalFocus" },
-  { "key": "ctrl+down", "command": "workbench.action.terminal.resizePaneDown", "when": "terminalFocus" },
-  { "key": "ctrl+left", "command": "workbench.action.terminal.resizePaneLeft", "when": "terminalFocus" },
-  { "key": "ctrl+right", "command": "workbench.action.terminal.resizePaneRight", "when": "terminalFocus" },
 ]

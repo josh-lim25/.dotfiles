@@ -255,6 +255,7 @@ alias monmid='ddcutil --display 1 setvcp 10 50'
 alias monhi='ddcutil --display 1 setvcp 10 100'
 alias dim='wlsunset -s $(date +%H:%M) -t 4000 &'
 alias vdiff='nvim -d'
+alias diff='diff -u --color'
 alias py='python3'
 # alias tree="tree -C -L 3 -a -I '.git' --charset X " # -C for color
 alias tree="tree -I .git"
