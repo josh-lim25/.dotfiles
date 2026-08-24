@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PR="${1}"
+
+# Interactively select PR
+if [ -z "$PR" ]; then
+  if ! command -v fzf &> /dev/null; then
+    echo "Error: Pass a PR number or install fzf." >&2
+    exit 1
+  fi
+
+  PR_SELECTION=$(gh pr list --limit 30 --json number,title,author \
+    --template '{{range .}}{{.number}} - {{.title}} (@{{.author.login}}){{"\n"}}{{end}}' \
+    | fzf --prompt="Select PR to review > ")
+
+  PR=$(echo "$PR_SELECTION" | awk '{print $1}')
+fi
+
+[ -z "$PR" ] && exit 0
+
+WORK_DIR="/tmp/pr-${PR}"
+BRANCH_NAME="review/pr-${PR}"
+
+# Prune stale worktrees and clean up existing worktree dir/branch if still present
+git worktree prune >&2
+if [ -d "$WORK_DIR" ]; then
+  git worktree remove --force "$WORK_DIR" >&2 2>/dev/null || rm -rf "$WORK_DIR"
+fi
+git branch -D "$BRANCH_NAME" >&2 2>/dev/null || true
+
+# Create isolated worktree in /tmp
+git worktree add --detach "$WORK_DIR" >&2
+
+# Fetch and checkout PR inside the worktree
+(
+  cd "$WORK_DIR"
+  gh pr checkout "$PR" -b "$BRANCH_NAME" --force >&2
+  git branch --unset-upstream "$BRANCH_NAME" >&2 2>/dev/null || true
+)
+
+# Output directory path for wrapper functions
+echo "$WORK_DIR"

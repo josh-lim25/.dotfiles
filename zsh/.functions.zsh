@@ -111,6 +111,15 @@ cdg() {
     fi
 }
 
+review() {
+  local target_dir
+  target_dir=$(gh-review-tmp "$1")
+  if [ -n "$target_dir" ] && [ -d "$target_dir" ]; then
+    cd "$target_dir" || return
+    echo "Switched to PR worktree: $(pwd)"
+  fi
+}
+
 # https://github.com/MSmaili/dotfiles/blob/370bac98a72d1a4ff8d2cfbea789ef4472f348a7/.config/zsh/functions.zsh
 # TODO: better soln
 # [[ VIEW THE DIFF OF A FILE ]]
