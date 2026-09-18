@@ -8,5 +8,6 @@
     ],
     "update.mode": "none",
     "editor.cursorBlinking": "solid",
-    "extensions.autoUpdate": "off"
+    "extensions.autoUpdate": "off",
+    "chat.agentSessions.showExternal": "all"
 }

@@ -7,7 +7,7 @@
 --
 -- Keymaps (registered at the bottom of this file, on load):
 --   <leader>gm  : picker of git-modified files (fzf-lua git_status)
---   <leader>rc  : (visual) queue the current selection + a comment
+--   <leader>rr  : (visual) queue the current selection + a comment
 --   <leader>rf  : flush the queue to the clipboard and ~/.cache/nvim-review-notes/<session>/ANNOTATIONS.md
 --   <leader>re  : open the current session's file to edit by hand
 --   <leader>rs  : show the queued notes in a scratch buffer

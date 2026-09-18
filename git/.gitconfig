@@ -9,9 +9,13 @@
 	pager = delta
 [interactive]
 	diffFilter = delta --color-only
+[include]
+    path = .dotfiles/delta/themes.ini
 [delta]
 	navigate = true  # use n and N to move between diff sections
-	dark = true      # omit for auto-detection: https://dandavison.github.io/delta/choosing-colors-styles.html
+	; dark = true      # omit for auto-detection: https://dandavison.github.io/delta/choosing-colors-styles.html
+    features = kanagawa-paper-ink-strong-diff
+    ; features = kanagawa-paper-ink
 
 [diff]
 	algorithm = histogram # https://jvns.ca/blog/2024/02/16/popular-git-config-options/#diff-algorithm-histogram

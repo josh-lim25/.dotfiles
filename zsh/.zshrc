@@ -156,7 +156,11 @@ source ~/.functions.zsh
 # [[ SHELL INTEGRATIONS ]] {{
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"   # replaces cd and exposes cdi for fuzzy finding
-eval "$(atuin init zsh --disable-up-arrow)"
+# eval "$(atuin init zsh --disable-up-arrow)"
+# }}
+
+# [[ SECRETS ]] {{
+[[ -f "$HOME/.api_keys/.secrets.env" ]] && source "$HOME/.api_keys/.secrets.env"
 # }}
 
 # [[ ABBREVIATIONS ]] {{
@@ -243,6 +247,7 @@ alias pkg="pacman -Qq | fzf \
   --bind 'ctrl-d:preview-page-down' \
   --bind 'ctrl-u:preview-page-up' \
   --bind '?:toggle-preview-wrap'"
+alias pi='pi-box'
 
 
 # [[ "QOL" ]]
@@ -272,16 +277,17 @@ alias btconnect='bluetoothctl connect BC:87:FA:BB:97:66'
 alias souniq='sort | uniq -c'
 alias text='shuf -n25 /usr/share/dict/american-english -o test.txt'
 
+# [[ GIT ]]
+alias gitsync='git switch master && git pull --ff-only upstream master && git push origin master'
+
 # [[ GRC (COLORIZED OUTPUT) ]]
 alias go='grc go'
 alias ifconfig='grc ifconfig'
 alias diff='grc diff'
 # }}
 
-# [[ TESTING THROWAWAY IDEAS ]] {{
+# [[ THROWAWAYS ]] {{
 alias vv='cd /tmp && (nvim random.md)'  # e.g., changelog for big commits
-# [[ GIT ]]
-alias gitplay='cd ~/spaghetti/git_playground/'
 # [[ GO ]]
 alias vgo='cd /tmp && (nvim main.go)'
 # [[ JAVA ]]

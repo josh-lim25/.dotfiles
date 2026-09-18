@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Check host config directory exists so Docker doesn't auto-create it as root
+mkdir -p "$HOME/.pi/agent"
+
+exec docker run --rm -it \
+  --user "$(id -u):$(id -g)" \
+  -e OPENROUTER_API_KEY \
+  -e GEMINI_API_KEY \
+  -e HOME="$HOME" \
+  -e TERM="${TERM:-xterm-256color}" \
+  -e COLORTERM="${COLORTERM:-truecolor}" \
+  -v "$PWD:/workspace" \
+  -v "$HOME/ai:$HOME/ai" \
+  -v "$HOME/.pi:$HOME/.pi" \
+  pi-sandbox "$@"
+
+# `exec docker` replaces the wrapper shell process with the Docker process directly, which allows keyboard interrupts like Ctrl+C to pass straight to Pi without hanging your terminal.

@@ -114,11 +114,10 @@ return {
                         end, "[T]oggle Inlay [H]ints")
                     end
 
-                    -- TODO: change dynamically based on ft (looks good in java, bad w others)
-                    -- [[ Disable LSP semantic token highlighting ]]
-                    -- client.server_capabilities.semanticTokensProvider = nil
+                    -- TODO: change dynamically based on ft
+                    -- [[ DISABLE LSP SEMANTIC TOKEN HIGHLIGHTING ]]
+                    client.server_capabilities.semanticTokensProvider = nil
                     -- NOTE: Prevent LSP from overwriting treesitter color settings
-                    -- https://github.com/NvChad/NvChad/issues/1907
                     -- vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
                 end,
             })
@@ -127,6 +126,15 @@ return {
             --  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
             --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
             local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+            -- TODO: this is fine bc i use system install of gopls and dont use other langs, but need to fix later (ie never)
+            vim.lsp.config("gopls", {
+                capabilities = capabilities,
+                -- settings = {
+                --     gopls = {},
+                -- },
+            })
+            vim.lsp.enable("gopls")
 
             -- TODO: fix this mess
             --[[
@@ -246,12 +254,17 @@ return {
                 -- { PATH = 'append' },
                 handlers = {
                     function(server_name)
-                        local server = servers[server_name] or {}
+                        -- safely fallback to empty table if `servers` is commented out or nil
+                        local safe_servers = type(servers) == "table" and servers or {}
+                        local server = safe_servers[server_name] or {}
+
                         -- This handles overriding only values explicitly passed
                         -- by the server configuration above. Useful when disabling
                         -- certain features of an LSP (for example, turning off formatting for ts_ls)
                         server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-                        require("lspconfig")[server_name].setup(server)
+
+                        vim.lsp.config(server_name, server) -- changed `opts` to `server`
+                        vim.lsp.enable(server_name)
                     end,
                 },
             })

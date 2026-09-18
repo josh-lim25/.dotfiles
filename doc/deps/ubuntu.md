@@ -15,12 +15,19 @@
 - `gnome-shell-extension-manager`
 - `unzip`
 - `jsonlint`
-- `treesitter-cli`
+- `keyd`
+- `chromium`
+- `tree-sitter-cli`
+- `util-linux-extra`
+- `ddcutil`
 
 ### Snaps
 - `nvim`
 - `mattermost-desktop`
 - `multipass`
+
+### Fonts
+[Hack](https://github.com/source-foundry/hack#linux)
 
 ## Installation mishaps
 ### SSH

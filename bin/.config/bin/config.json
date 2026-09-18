@@ -34,17 +34,6 @@
             "selected_asset": "revdiff_1.11.1_linux_amd64.tar.gz",
             "pinned": false
         },
-        "/home/josh/.local/bin/sops": {
-            "path": "/home/josh/.local/bin/sops",
-            "remote_name": "sops-v3.13.3.linux.amd64",
-            "version": "v3.13.3",
-            "hash": "e5bec3346a873ae91d871550f3e698c1aad962aff462a080e40f25fde17fef6b",
-            "url": "github.com/getsops/sops",
-            "provider": "github",
-            "package_path": "",
-            "selected_asset": "sops-v3.13.3.linux.amd64",
-            "pinned": false
-        },
         "/home/josh/.local/bin/zoxide": {
             "path": "/home/josh/.local/bin/zoxide",
             "remote_name": "zoxide",
