@@ -1,3 +1,6 @@
+-- Shared blend helper in lib/blend.lua.
+local blend = require("plugins.core.colorschemes.lib.blend").blend
+
 return {
   "thesimonho/kanagawa-paper.nvim",
   lazy = false,
@@ -19,7 +22,16 @@ return {
     },
     overrides = function(colors)
       local bg = colors.theme.ui.bg_search
+      local bg_editor = colors.theme.ui.bg -- sumiInk3 (#1F1F28); base the diffs blend into
       local p = colors.palette
+
+      -- Whole-line diff bg = accent blended into the editor bg, matching
+      -- kanagawa-paper's own r = 0.9. `diff_r` closer to 1 is more
+      -- blended:
+      --   0.90  theme default
+      --   0.85  a touch more saturated
+      --   0.95  barely tinted
+      local diff_r = 0.90
 
       return {
         -- search
@@ -82,8 +94,31 @@ return {
         -- ["@markup.list.markdown"] = { link = "Function" },
         -- ["@markup.quote.markdown"] = { fg = p.dragonOrange },
         -- ["@markup.list.checked.markdown"] = { link = "WarningMsg" },
+
+        -- DIFF HIGHLIGHTS
+        --   bg-only on Add/Change keeps treesitter/LSP syntax showing through;
+        --   fg is only set on Delete/Text (no syntax to preserve there).
+        --
+        -- Whole-line bg = accent blended into editor bg (kanagawa's own r=0.9).
+        -- Dial `diff_r` above to taste (0.90 default, lower = stronger tint).
+
+        -- (+) added lines  -- bg only, do NOT set fg or syntax is flattened
+        DiffAdd = { bg = blend(p.dragonGreen, bg_editor, diff_r) },
+        DiffAdded = { link = "DiffAdd" },
+
+        -- (~) changed lines -- bg only, do NOT set fg or syntax is flattened
+        DiffChange = { bg = blend(p.dragonYellow, bg_editor, diff_r) },
+        DiffChanged = { link = "DiffChange" },
+
+        -- (-) removed lines -- theme tints fg too (no buffer syntax here)
+        DiffDelete = { fg = p.dragonRed, bg = blend(p.dragonRed, bg_editor, diff_r) },
+        DiffRemoved = { link = "DiffDelete" },
+
+        -- inline word-level changed text -- bg + fg + bold
+        DiffText = { fg = p.dragonYellow, bg = blend(p.dragonYellow, bg_editor, diff_r), bold = true },
       }
     end,
+
   },
   config = function(_, opts)
     require("kanagawa-paper").setup(opts)

@@ -19,6 +19,8 @@ user_pref("browser.newtabpage.activity-stream.showSponsored", false); // Sponsor
 // NOTE: AI disabled by default - https://github.com/yokoffing/Betterfox/wiki/Common-Overrides#alternatives
 
 // NOTE: search engine suggestions disabled by default - https://github.com/yokoffing/Betterfox/wiki/Common-Overrides#search-settings
+// PREF: restore search engine suggestions
+user_pref("browser.search.suggest.enabled", true);
 
 // TODO: https://github.com/yokoffing/Betterfox/wiki/Common-Overrides#containers
 // consider using these

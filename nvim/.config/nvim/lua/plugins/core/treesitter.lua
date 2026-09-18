@@ -1,20 +1,24 @@
--- Treesitter via the community-maintained fork (neovim-treesitter org). The
--- original nvim-treesitter/nvim-treesitter was archived in April 2026 and no
--- longer gets parser updates. This fork discovers parsers and queries from a
--- live registry, so :TSUpdate always fetches the latest grammar for each lang.
+-- Tree-sitter via upstream nvim-treesitter/nvim-treesitter (main branch). The
+-- neovim-treesitter fork was retired once the upstream maintainer returned and
+-- upstream now carries the rewrite the fork was based on, so we use upstream.
 --
 -- Needs the tree-sitter CLI (0.26.1+) installed system-wide, a C compiler, and
 -- curl. The plugin only installs parsers/queries; you switch features on
 -- yourself in the FileType autocommand below.
 return {
     {
-        'neovim-treesitter/nvim-treesitter',
-        dependencies = { 'neovim-treesitter/treesitter-parser-registry' },
+        'nvim-treesitter/nvim-treesitter',
+        branch = 'main',
         lazy = false, -- this plugin does not support lazy-loading
+
         build = ':TSUpdate',
         config = function()
+            require('nvim-treesitter').setup({
+                install_dir = vim.fn.stdpath('data') .. '/site',
+            })
             -- async install, skips parsers you already have.
             require('nvim-treesitter').install({
+
                 'go', 'bash', 'cpp', 'diff', 'c', 'java', 'lua', 'vim',
                 'vimdoc', 'markdown', 'markdown_inline', 'gitcommit',
                 'git_rebase', 'gitattributes', 'gitignore', 'rust', 'python',
@@ -62,7 +66,7 @@ return {
     {
         'nvim-treesitter/nvim-treesitter-textobjects',
         branch = 'main',
-        dependencies = { 'neovim-treesitter/nvim-treesitter' },
+        dependencies = { 'nvim-treesitter/nvim-treesitter' }, -- upstream, not the fork
         config = function()
             require('nvim-treesitter-textobjects').setup({
                 select = {

@@ -116,7 +116,7 @@ review() {
   target_dir=$(gh-review-tmp "$1")
   if [ -n "$target_dir" ] && [ -d "$target_dir" ]; then
     cd "$target_dir" || return
-    echo "Switched to PR worktree: $(pwd)"
+    echo "Switched to standalone PR repo: $(pwd)"
   fi
 }
 

@@ -80,7 +80,7 @@ return {
         map("n", "<leader>gS", gitsigns.stage_buffer, { desc = "[g]it [S]tage" })
         map("n", "<leader>gR", gitsigns.reset_buffer, { desc = "[g]it [R]eset" })
         map("n", "<leader>gh", function() gitsigns.change_base("HEAD~1", true) end, { desc = "git diff against HEAD~1, older base" })
-        map("n", "<leader>gH", function() gitsigns.reset_base(true) end, { desc = "git reset base index" })
+        -- map("n", "<leader>gH", function() gitsigns.reset_base(true) end, { desc = "git reset base index" })
         map({ "o", "x" }, "ih", "<Cmd>Gitsigns select_hunk<CR>", { desc = "gitsigns: select hunk" })
 
         -- Diffs

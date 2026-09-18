@@ -1,0 +1,7 @@
+.git/
+.cache/
+.vscode/
+.npm/
+node_modules/
+go/pkg/
+Pictures/

@@ -3,26 +3,37 @@ return {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   event = "VimEnter",
   opts = {
-    files = {
-      hidden = true,
-      fd_opts = "--type f --hidden --exclude .git",
-    },
-    grep = {
-      rg_opts = "--column --line-number --no-heading --color=always --smart-case --hidden -g '!.git/'",
-      rg_glob = true, -- enable glob parsing
-      glob_flag = "--iglob", -- case insensitive globs
-      glob_separator = "%s%-%-", -- query separator pattern (lua): ' --'
-    },
-    fzf_opts = {
-      ["--info"] = "default",
-      -- ["--layout"] = "default",  -- puts searchbar in middle
-    },
-    keymap = {
-      fzf = {
-        ["ctrl-q"] = "select-all+accept",
+      fzf_colors = false,
+      -- shrink preview window to 25% (default 50%)
+      winopts = {
+        preview = {
+          horizontal = "right:40%",
+          vertical = "down:25%",
+        },
+      },
+
+      files = {
+        hidden = true,
+        fd_opts = "--type f --hidden",
+      },
+      grep = {
+        rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 --hidden",
+        rg_glob = true,                   -- enable glob parsing
+        glob_flag = "--iglob",            -- case insensitive globs
+        glob_separator = "%s%-%-",        -- query separator pattern (lua): ' --'
+      },
+      fzf_opts = {
+        ["--tiebreak"] = "begin,length",  -- prioritize matches at the beginning of words/paths and shorter strings
+        ["--info"] = "default",
+        ["--color"] = "fg:#dcd7ba,fg+:#dcd7ba:bold,bg:#1f1f28,bg+:#43436c,hl:#859fac,hl+:#c4746e,info:#699469,marker:#c4b28a,prompt:#c4746e,spinner:#8ea49e,pointer:#c4b28a,header:#658594,border:#625e5a,gutter:#1f1f28,separator:#2a2a37,label:#658594,query:#dcd7ba:regular",
+
+      },
+      keymap = {
+        fzf = {
+          ["ctrl-q"] = "select-all+accept",
+        },
       },
     },
-  },
   config = function(_, opts)
     local fzf = require("fzf-lua")
     local actions = require("fzf-lua.actions")
@@ -75,11 +86,11 @@ return {
     keymap("n", "<leader>fS", fzf.lsp_workspace_symbols, { desc = "Find symbols in workspace" })
 
     -- [[ GIT ]]
-    keymap("n", "<leader>gg", fzf.git_status, { desc = "Its over" })
-    keymap("n", "<leader>gfc", fzf.git_commits, { desc = "[G]it [f]zf repo [c]ommits" })
-    keymap("n", "<leader>gfC", fzf.git_bcommits, { desc = "[G]it [f]zf buffer [C]ommits" })
-    keymap("n", "<leader>gfb", fzf.git_branches, { desc = "[G]it [f]zf [b]ranches" })
-    keymap("n", "<leader>gfz", fzf.git_stash, { desc = "[G]it [f]zf stashe[z]" })
+    keymap("n", "<leader>gd", fzf.git_status, { desc = "[G]it [d]iff" })
+    keymap("n", "<leader>gc", fzf.git_commits, { desc = "[G]it [c]ommits" })
+    keymap("n", "<leader>gC", fzf.git_bcommits, { desc = "[G]it buffer [C]ommits" })
+    -- keymap("n", "<leader>gfb", fzf.git_branches, { desc = "[G]it [f]zf [b]ranches" })
+    -- keymap("n", "<leader>gz", fzf.git_stash, { desc = "[G]it [f]zf stashe[z??]" })
     keymap("n", "<leader>gfh", function()
       fzf.git_hunks({ ref = "HEAD~1" })
     end, { desc = "[G]it [f]zf [h]unks vs HEAD~1" })
