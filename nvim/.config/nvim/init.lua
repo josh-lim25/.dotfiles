@@ -4,6 +4,12 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true  -- if a Nerd Font is installed and selected in the terminal
 
+-- In the pi container, only load lua/minimal.lua, nothing else.
+if os.getenv("NVIM_MINIMAL") then
+  require("minimal")
+  return
+end
+
 require("settings.options")
 require("settings.keymaps")
 require("settings.diagnostics")

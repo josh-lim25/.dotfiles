@@ -69,6 +69,7 @@ return {
     keymap("n", "<leader>fW", fzf.grep_cWORD, { desc = "[F]ind occurrences of [W]ORD on cursor" })
     keymap("n", "<leader>fd", fzf.diagnostics_document, { desc = "[F]ind [D]iagnostics" })
     keymap("n", "<leader>fo", fzf.oldfiles, { desc = "[F]ind [O]ld Files" })
+    keymap("n", "<leader>fr", fzf.resume, { desc = "[F]ind [R]erun prev run command" })
     keymap("n", "<leader><leader>", fzf.buffers, { desc = "See existing buffers" })
     keymap("n", "<leader>/", fzf.lgrep_curbuf, { desc = "Grep in current buffer" })
     keymap("n", "<leader>fn", function()

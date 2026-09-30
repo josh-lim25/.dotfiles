@@ -1,7 +1,26 @@
 local M = {}
 
--- A single persistent file for all review notes
-M.notes_file = vim.fn.expand("/tmp/nvim-review-notes/REVIEW.md")
+local DEFAULT_HEADER = table.concat({
+  "Please review these changes and make targeted fixes.\n",
+  "Each item lists a file with a line range, my comment, and the exact lines I selected.\n",
+  "Line numbers may shift as you edit, so match each region by its content.\n",
+  "When there is a clear-cut right answer for review comments, apply them in a way that gets at the heart of the comment and respects existing conventions.\n",
+  "When there is a NOT clear-cut right answer for review comments, give rationale and present tradeoffs.\n",
+  "Make edits to files from the bottom up to preserve line number integrity where possible.\n",
+}, "")
+
+-- Default persistent notes file. An embedding tool can point this elsewhere with
+-- NVIM_REVIEW_NOTES so one review does not mix with the next.
+M.notes_file = vim.fn.expand(vim.env.NVIM_REVIEW_NOTES or "/tmp/nvim-review-notes/REVIEW.md")
+
+-- NVIM_REVIEW_HEADER overrides the seed header; an empty value suppresses it.
+local function review_header()
+  local override = vim.env.NVIM_REVIEW_HEADER
+  if override ~= nil then
+    return override
+  end
+  return DEFAULT_HEADER
+end
 
 local function relpath()
   local p = vim.fn.expand("%:.")
@@ -28,12 +47,13 @@ local function append_to_file(text)
   end
 
   if is_new then
-    fh:write("Please review these changes and make targeted fixes.\n")
-    fh:write("Each item lists a file with a line range, my comment, and the exact lines I selected.\n")
-    fh:write("Line numbers may shift as you edit, so match each region by its content.\n")
-    fh:write("When there is a clear-cut right answer for review comments, apply them in a way that gets at the heart of the comment and respects existing conventions.\n")
-    fh:write("When there is a NOT clear-cut right answer for review comments, give rationale and present tradeoffs.\n")
-    fh:write("Make edits to files from the bottom up to preserve line number integrity where possible.\n\n")
+    local header = review_header()
+    if header ~= "" then
+      fh:write(header)
+      if not header:match("\n\n$") then
+        fh:write("\n")
+      end
+    end
   end
 
   fh:write(text)
