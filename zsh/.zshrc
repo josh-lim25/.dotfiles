@@ -54,10 +54,12 @@ export PATH="$HOME/.local/share/nvim/mason/bin:$PATH" # NOTE: change if using di
 
 # [[ SSH ]]
 # See ~/.config/systemd/user/ssh-agent.service
-export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
+# Only fall back to the systemd agent socket when nothing else provided one:
+# VS Code's Dev Containers extension sets SSH_AUTH_SOCK to a forwarded agent.
+[[ -z "${SSH_AUTH_SOCK:-}" && -n "${XDG_RUNTIME_DIR:-}" ]] && export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
 
 # [[ FNM ]]
-FNM_PATH="/home/josh/.local/share/fnm"
+FNM_PATH="$HOME/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
   export PATH="$FNM_PATH:$PATH"
   # eval "$(fnm env --shell zsh)"

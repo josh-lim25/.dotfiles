@@ -25,7 +25,10 @@
 
 
 # systemctl --user enable --now ssh-agent.service
-if [[ -z "${SSH_CONNECTION}" ]]; then
+# Fall back to the systemd agent socket only if no agent is already configured:
+# in a dev container VS Code forwards the host agent and sets SSH_AUTH_SOCK,
+# which must not be overwritten.
+if [[ -z "${SSH_AUTH_SOCK:-}" && -n "${XDG_RUNTIME_DIR:-}" ]]; then
     export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 fi
 

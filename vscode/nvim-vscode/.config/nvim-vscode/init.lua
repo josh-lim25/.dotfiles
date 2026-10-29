@@ -144,6 +144,9 @@ keymap("n", "<leader>th", function()
   vscode.update_config("editor.inlayHints.enabled", cur == "on" and "off" or "on", "global")
 end, { desc = "Toggle inlay hints" })
 
+-- chat
+keymap("n", "<leader>ai", action("workbench.action.chat.toggle"), { desc = "Toggle chat" })
+
 -- diagnostics
 keymap("n", "]d", action("editor.action.marker.next"), { desc = "Next diagnostic" })
 keymap("n", "[d", action("editor.action.marker.prev"), { desc = "Prev diagnostic" })

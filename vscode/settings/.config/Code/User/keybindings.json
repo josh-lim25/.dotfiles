@@ -1,3 +1,181 @@
-// Place your key bindings in this file to override the defaults
 [
+  {
+    "key": "ctrl+h",
+    "command": "workbench.action.navigateLeft",
+    "when": "!editorTextFocus || neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+l",
+    "command": "workbench.action.navigateRight",
+    "when": "!editorTextFocus || neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "workbench.action.navigateDown",
+    "when": "!editorTextFocus || neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+k",
+    "command": "workbench.action.navigateUp",
+    "when": "!editorTextFocus || neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+e",
+    "command": "editor.action.jumpToBracket",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+o",
+    "command": "workbench.action.navigateBack",
+    "when": "editorTextFocus && neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+i",
+    "command": "workbench.action.navigateForward",
+    "when": "editorTextFocus && neovim.mode != 'insert'"
+  },
+
+  {
+    "key": "ctrl+space",
+    "command": "-editor.action.triggerSuggest",
+    "when": "editorHasCompletionProvider && textInputFocus && !editorReadonly && !inCompositeEditor"
+  },
+  {
+    "key": "ctrl+space",
+    "command": "-toggleSuggestionDetails",
+    "when": "suggestWidgetVisible"
+  },
+
+  {
+    "key": "ctrl+space v",
+    "command": "workbench.action.splitEditorRight"
+  },
+  {
+    "key": "ctrl+space h",
+    "command": "workbench.action.splitEditorDown"
+  },
+  {
+    "key": "ctrl+space v",
+    "command": "workbench.action.terminal.split",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+space c",
+    "command": "workbench.action.terminal.new"
+  },
+  {
+    "key": "ctrl+space x",
+    "command": "workbench.action.terminal.kill",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+space x",
+    "command": "workbench.action.closeActiveEditor",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+x",
+    "command": "workbench.action.terminal.kill",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+x",
+    "command": "workbench.action.closeActiveEditor",
+    "when": "editorTextFocus && neovim.mode != 'insert'"
+  },
+
+  {
+    "key": "ctrl+up",
+    "command": "workbench.action.decreaseViewHeight"
+  },
+  {
+    "key": "ctrl+down",
+    "command": "workbench.action.increaseViewHeight"
+  },
+  {
+    "key": "ctrl+left",
+    "command": "workbench.action.decreaseViewWidth"
+  },
+  {
+    "key": "ctrl+right",
+    "command": "workbench.action.increaseViewWidth"
+  },
+  {
+    "key": "ctrl+up",
+    "command": "workbench.action.terminal.resizePaneUp",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+down",
+    "command": "workbench.action.terminal.resizePaneDown",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+left",
+    "command": "workbench.action.terminal.resizePaneLeft",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+right",
+    "command": "workbench.action.terminal.resizePaneRight",
+    "when": "terminalFocus"
+  },
+
+  {
+    "key": "ctrl+space z",
+    "command": "workbench.action.toggleMaximizedPanel",
+    "when": "panelFocus"
+  },
+  {
+    "key": "ctrl+space z",
+    "command": "workbench.action.toggleMaximizeEditorGroup",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+space z",
+    "command": "workbench.action.toggleMaximizedAuxiliaryBar",
+    "when": "auxiliaryBarFocus"
+  },
+  {
+    "key": "alt+z",
+    "command": "workbench.action.toggleMaximizedAuxiliaryBar",
+    "when": "webviewFocus && !editorTextFocus && !panelFocus"
+  },
+
+  {
+    "key": "n",
+    "command": "list.focusDown",
+    "when": "listFocus && treeFindOpen && !inputFocus"
+  },
+  {
+    "key": "shift+n",
+    "command": "list.focusUp",
+    "when": "listFocus && treeFindOpen && !inputFocus"
+  },
+  {
+    "key": "ctrl+f ctrl+f",
+    "command": "workbench.action.files.openFile",
+    "when": "neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+f ctrl+o",
+    "command": "workbench.action.files.openFolder",
+    "when": "neovim.mode != 'insert'"
+  },
+
+  {
+    "key": "ctrl+b",
+    "command": "-vscode-neovim.ctrl-b",
+    "when": "editorTextFocus && neovim.ctrlKeysNormal.b && neovim.init && neovim.mode != 'insert' && editorLangId not in 'neovim.editorLangIdExclusions'"
+  },
+  {
+    "key": "ctrl+b",
+    "command": "-vscode-neovim.send",
+    "when": "editorTextFocus && neovim.ctrlKeysInsert.b && neovim.init && neovim.mode == 'insert' && editorLangId not in 'neovim.editorLangIdExclusions'"
+  },
+  {
+    "key": "ctrl+b",
+    "command": "-editor.action.pageUpHover",
+    "when": "editorHoverFocused"
+  }
 ]

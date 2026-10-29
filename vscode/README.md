@@ -1,7 +1,7 @@
 - Remember to stow both packages:
 ```sh
 cd ~/.dotfiles/vscode
-stow -t ~ nvim-vscode settings
+stow --no-folding -t ~ nvim-vscode settings
 ```
 Stow links into the parent of the stow directory by default; other packages work without `-t` only because they sit directly in `~/.dotfiles`, whose parent is `~`.
 

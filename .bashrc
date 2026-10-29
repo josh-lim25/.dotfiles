@@ -2,6 +2,17 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+# In a dev container, hand off to zsh so the real shell config is used. The
+# container image keeps `CMD ["bash"]`, so VS Code's integrated terminal starts
+# bash and sources this file; `exec` replaces it before the host-oriented bash
+# setup below runs. Strictly guarded on being inside a container, so the host
+# (which already uses zsh) is unaffected.
+if [ -n "$REMOTE_CONTAINERS$DEVCONTAINER$CODESPACES" ] || [ -f /.dockerenv ]; then
+    if [ -z "$ZSH_VERSION" ] && [[ $- == *i* ]] && zsh_path=$(command -v zsh); then
+        exec "$zsh_path" -l
+    fi
+fi
+
 # pretty sure this one makes term prompt just '$'
 # export PS1="\W \$"
 # \w makes it pwd
