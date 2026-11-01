@@ -51,10 +51,6 @@ end, { expr = true })
 -- Others: TAB/CTRL+I, ESC/CTRL+[, ENTER/CTRL+M."
 vim.keymap.set({ "i", "c" }, "<C-H>", "<C-W>", { desc = "Delete previous word (Ctrl+Backspace)" })
 
--- [[ GLOBAL SUBSTITUTION ]]
--- keymap("n", "<leader>su", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], opts)
-keymap("n", "S", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left><C-w>]], opts)
-
 -- [[ SET WORKDIR TO FILE YOU'RE EDITING ]]
 keymap(
   "n",

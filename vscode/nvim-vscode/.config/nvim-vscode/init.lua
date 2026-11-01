@@ -59,9 +59,6 @@ end, { expr = true })
 -- duplicate line + comment original (native `gc`, requires nvim >= 0.10)
 keymap("n", "yc", "yygccp", { remap = true })
 
--- global substitute of word under cursor
-keymap("n", "S", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left><C-w>]], opts)
-
 -- anti-textwrap j/k
 keymap({ "n", "v" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 keymap({ "n", "v" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
@@ -152,6 +149,10 @@ keymap("n", "]d", action("editor.action.marker.next"), { desc = "Next diagnostic
 keymap("n", "[d", action("editor.action.marker.prev"), { desc = "Prev diagnostic" })
 keymap("n", "<leader>q", action("workbench.actions.view.problems"), { desc = "Problems panel" })
 keymap("n", "<leader>fd", action("workbench.actions.view.problems"), { desc = "Document diagnostics" })
+
+-- git
+keymap('n', ']g', "<cmd>call VSCodeNotify('workbench.action.editor.nextChange')<CR>")
+keymap('n', '[g', "<cmd>call VSCodeNotify('workbench.action.editor.previousChange')<CR>")
 
 -- finders
 keymap("n", "<leader>ff", action("workbench.action.quickOpen"), { desc = "Find files" })

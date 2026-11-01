@@ -1,9 +1,11 @@
 {
+  // devcontainer shell setup
   "dotfiles.repository": "https://github.com/josh-lim25/.dotfiles.git",
   "dotfiles.targetPath": "~/.dotfiles",
   "dotfiles.installCommand": "install-devcontainer.sh",
-  "terminal.integrated.defaultProfile.linux": "zsh",
 
+  // make it like nvim
+  "terminal.integrated.defaultProfile.linux": "zsh",
   "extensions.experimental.affinity": {
     "asvetliakov.vscode-neovim": 1
   },
@@ -14,7 +16,6 @@
   "editor.lineNumbers": "relative",
   "editor.cursorSurroundingLines": 999,
   "editor.cursorSurroundingLinesStyle": "all",
-  "editor.minimap.enabled": false,
   "editor.cursorBlinking": "solid",
   "editor.cursorSmoothCaretAnimation": "off",
   "editor.experimental.asyncTokenization": true,
@@ -25,6 +26,7 @@
   "extensions.autoUpdate": "off",
   "editor.formatOnSave": true,
   "editor.inlayHints.enabled": "on",
+
   // Go
   // "[go]": {
   //   "editor.defaultFormatter": "golang.go",
@@ -43,12 +45,29 @@
   //   "ui.semanticTokens": true,
   //   "formatting.gofumpt": false
   // },
+
+  // aesthetics
   "workbench.colorTheme": "Kanagawa Paper Ink (custom)",
-  // "workbench.colorTheme": "Kanagawa Paper Ink",
+  "chat.viewSessions.orientation": "stacked",
   // "workbench.colorCustomizations": {
   // "[Kanagawa Paper Ink]": {
   //   "editor.findMatchBackground": "#43436c",
   //   "editor.findMatchHighlightBackground": "#43436c66"
   // }
   // },
+
+  // efficiency
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/build/**": true,
+  },
+  "search.exclude": {
+    "**/build": true,
+  },
+  // Offloads terminal rendering to your GPU to free up CPU resources.
+  "terminal.integrated.gpuAcceleration": "auto",
+  "editor.minimap.enabled": false,
+  "editor.smoothScrolling": false,
+  "workbench.list.smoothScrolling": true,
+  "terminal.integrated.smoothScrolling": true,
 }

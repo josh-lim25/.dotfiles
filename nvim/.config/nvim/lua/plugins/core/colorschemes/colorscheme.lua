@@ -59,31 +59,38 @@ return {
         -- RenderMarkdownH5Bg = { fg = "#181616", bg = "#527152", bold = true },
         -- RenderMarkdownH6Bg = { fg = "#181616", bg = "#527152", bold = true },
 
-        -- highlight
-        RenderMarkdownH1Bg = { fg = "#c4b28a", bg = "none" },
-        RenderMarkdownH2Bg = { fg = "#8992a7", bg = "none" },
-        RenderMarkdownH3Bg = { fg = "#b6927b", bg = "none" },
-        RenderMarkdownH4Bg = { fg = "#708e9e", bg = "none" },
-        RenderMarkdownH5Bg = { fg = "#699469", bg = "none" },
-        RenderMarkdownH6Bg = { fg = "#949fb5", bg = "none" },
-
-        -- text
-        ["@markup.heading.1.markdown"] = { fg = "#c4b28a", bold = true },
-        ["@markup.heading.2.markdown"] = { fg = "#8992a7", bold = true },
-        ["@markup.heading.3.markdown"] = { fg = "#b6927b", bold = true },
-        ["@markup.heading.4.markdown"] = { fg = "#708e9e", bold = true },
-        ["@markup.heading.5.markdown"] = { fg = "#699469", bold = true },
-        ["@markup.heading.6.markdown"] = { fg = "#949fb5", bold = true },
-
-        -- icons
-        RenderMarkdownH1 = { fg = "#c4b28a" },
-        RenderMarkdownH2 = { fg = "#8992a7" },
-        RenderMarkdownH3 = { fg = "#b6927b" },
-        RenderMarkdownH4 = { fg = "#708e9e" },
-        RenderMarkdownH5 = { fg = "#699469" },
-        RenderMarkdownH6 = { fg = "#949fb5" },
-
-
+        -- -- highlight
+        -- RenderMarkdownH1Bg = { fg = "#c4b28a", bg = "none" },
+        -- RenderMarkdownH2Bg = { fg = "#8992a7", bg = "none" },
+        -- RenderMarkdownH3Bg = { fg = "#b6927b", bg = "none" },
+        -- RenderMarkdownH4Bg = { fg = "#708e9e", bg = "none" },
+        -- RenderMarkdownH5Bg = { fg = "#699469", bg = "none" },
+        -- RenderMarkdownH6Bg = { fg = "#949fb5", bg = "none" },
+        --
+        RenderMarkdownH1Bg = { bg = "none" },
+        RenderMarkdownH2Bg = { bg = "none" },
+        RenderMarkdownH3Bg = { bg = "none" },
+        RenderMarkdownH4Bg = { bg = "none" },
+        RenderMarkdownH5Bg = { bg = "none" },
+        RenderMarkdownH6Bg = { bg = "none" },
+        --
+        -- -- text
+        -- ["@markup.heading.1.markdown"] = { fg = "#c4b28a", bold = true },
+        -- ["@markup.heading.2.markdown"] = { fg = "#8992a7", bold = true },
+        -- ["@markup.heading.3.markdown"] = { fg = "#b6927b", bold = true },
+        -- ["@markup.heading.4.markdown"] = { fg = "#708e9e", bold = true },
+        -- ["@markup.heading.5.markdown"] = { fg = "#699469", bold = true },
+        -- ["@markup.heading.6.markdown"] = { fg = "#949fb5", bold = true },
+        --
+        -- -- icons
+        -- RenderMarkdownH1 = { fg = "#c4b28a" },
+        -- RenderMarkdownH2 = { fg = "#8992a7" },
+        -- RenderMarkdownH3 = { fg = "#b6927b" },
+        -- RenderMarkdownH4 = { fg = "#708e9e" },
+        -- RenderMarkdownH5 = { fg = "#699469" },
+        -- RenderMarkdownH6 = { fg = "#949fb5" },
+        --
+        --
         -- markdown inline (treesitter)
         ["@markup.link.label.markdown_inline"] = { fg = p.dragonYellow },
         -- ["@markup.link.label.markdown_inline"] = { fg = "#658594" },

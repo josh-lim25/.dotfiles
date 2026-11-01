@@ -1,4 +1,5 @@
 [
+  // tmux-like navigation and pane management
   {
     "key": "ctrl+h",
     "command": "workbench.action.navigateLeft",
@@ -8,6 +9,16 @@
     "key": "ctrl+l",
     "command": "workbench.action.navigateRight",
     "when": "!editorTextFocus || neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+h",
+    "command": "workbench.action.terminal.focusPreviousPane",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+l",
+    "command": "workbench.action.terminal.focusNextPane",
+    "when": "terminalFocus"
   },
   {
     "key": "ctrl+j",
@@ -56,6 +67,11 @@
   },
   {
     "key": "ctrl+space v",
+    "command": "workbench.action.terminal.split",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+space h",
     "command": "workbench.action.terminal.split",
     "when": "terminalFocus"
   },
@@ -152,6 +168,8 @@
     "command": "list.focusUp",
     "when": "listFocus && treeFindOpen && !inputFocus"
   },
+
+  // opening files
   {
     "key": "ctrl+f ctrl+f",
     "command": "workbench.action.files.openFile",
@@ -163,6 +181,7 @@
     "when": "neovim.mode != 'insert'"
   },
 
+  // restoring stuff
   {
     "key": "ctrl+b",
     "command": "-vscode-neovim.ctrl-b",
